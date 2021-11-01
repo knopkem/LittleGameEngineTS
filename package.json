@@ -7,6 +7,9 @@
     "type": "git",
     "url": "git+https://github.com/KilledByAPixel/LittleJS.git"
   },
+  "scripts": {
+    "build": "node build-engine.js"
+  },
   "keywords": [
     "HTML5",
     "JavaScript",
@@ -24,5 +27,11 @@
   "homepage": "https://github.com/KilledByAPixel/LittleJS",
   "dependencies": {
     "clean-jsdoc-theme": "^3.2.10"
+  },
+  "devDependencies": {
+    "ect-bin": "^1.4.1",
+    "google-closure-compiler": "^20211006.0.0",
+    "roadroller": "^2.1.0",
+    "uglify-js": "^3.14.2"
   }
 }
