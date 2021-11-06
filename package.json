@@ -8,7 +8,8 @@
     "url": "git+https://github.com/KilledByAPixel/LittleJS.git"
   },
   "scripts": {
-    "build": "node build-engine.js"
+    "build": "tsc -p engine",
+    "migrate": "npx ts-migrate"
   },
   "keywords": [
     "HTML5",
@@ -32,6 +33,9 @@
     "ect-bin": "^1.4.1",
     "google-closure-compiler": "^20211006.0.0",
     "roadroller": "^2.1.0",
+    "ts-migrate": "^0.1.26",
+    "tsc": "^2.0.3",
+    "typescript": "^4.4.4",
     "uglify-js": "^3.14.2"
   }
 }
