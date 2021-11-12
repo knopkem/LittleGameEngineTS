@@ -1,3 +1,5 @@
+// <reference path="engineUtilities.ts" />
+
 /**
  *  LittleJS Engine Settings
  *  @namespace Settings
@@ -144,7 +146,7 @@ const gamepadsEnable = 1;
 /** If true touch input is routed to mouse functions
  *  @default
  *  @memberof Settings */
-const touchInputEnable = 1;
+var touchInputEnable = 1;
 
 /** Allow players to use dpad as analog stick
  *  @default

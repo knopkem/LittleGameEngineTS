@@ -44,7 +44,7 @@ const min = (a: any, b: any)=> a < b ?  a : b;
  *  @param {Number} valueB
  *  @return {Number}
  *  @memberof Utilities */
-const max = (a: any, b: any)=> a > b ?  a : b;
+var max = (a: any, b: any)=> a > b ?  a : b;
 
 /** Returns first parm modulo the second param, but adjusted so negative numbers work as expected
  *  @param {Number} dividend

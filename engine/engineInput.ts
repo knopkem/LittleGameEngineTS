@@ -1,3 +1,5 @@
+// <reference path="engineSettings.ts" />
+
 /** 
  *  LittleJS Input System
  *  <br> - Tracks key down, pressed, and released
