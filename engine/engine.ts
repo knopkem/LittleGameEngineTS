@@ -1,3 +1,11 @@
+import { fixedWidth, fixedHeight, tileBleedShrinkFix, pixelated, fixedFitToWindow, maxHeight, maxWidth } from "./engineSettings";
+import { ASSERT, debugInit, debugUpdate, debugRender, debug, showWatermark } from "./engineDebug";
+import { min, lerp, vec2, isOverlapping } from "./engineUtilities";
+import { tileImage, mainCanvas, mainContext, overlayCanvas, overlayContext, mainCanvasSize } from "./engineDraw";
+import { medalsRender } from "./engineMedals";
+import { glInit, glPreRender } from "./engineWebGL";
+import { glCanvas } from "./engineWebGL";
+
 /*
     LittleJS - The Tiny JavaScript Game Engine That Can!
     MIT License - Copyright 2021 Frank Force
@@ -18,40 +26,40 @@
 
 
 /** Name of engine */
-const engineName = 'LittleJS';
+export const engineName = 'LittleJS';
 
 /** Version of engine */
-const engineVersion = '1.1.2';
+export const engineVersion = '1.1.2';
 
 /** Frames per second to update objects
  *  @default */
-const FPS = 60;
+export const FPS = 60;
 
 /** How many seconds each frame lasts, engine uses a fixed time step
  *  @default 1/60 */
-const timeDelta = 1/FPS;
+export const timeDelta = 1 / FPS;
 
 /** Array containing all engine objects */
-let engineObjects: any = [];
+export let engineObjects: any = [];
 
 /** Array containing only objects that are set to collide with other objects (for optimization) */
-let engineCollideObjects: any = [];
+export let engineCollideObjects: any = [];
 
 /** Current update frame, used to calculate time */
-let frame = 0;
+export let frame = 0;
 
 /** Current engine time since start in seconds, derived from frame */
-let time = 0;
+export let time = 0;
 
 /** Actual clock time since start in seconds (not affected by pause or frame rate clamping) */
-let timeReal = 0;
+export let timeReal = 0;
 
 /** Is the game paused? Causes time and objects to not be updated. */
-let paused = 0;
+export let paused = 0;
 
 // Engine internal variables not exposed to documentation
-let frameTimeLastMS = 0, frameTimeBufferMS = 0, debugFPS = 0, 
-    shrinkTilesX, shrinkTilesY, drawCount: any, tileImageSize, tileImageSizeInverse: false;
+export let frameTimeLastMS = 0, frameTimeBufferMS = 0, debugFPS = 0,
+    shrinkTilesX: number, shrinkTilesY: number, drawCount: any, tileImageSize: any, tileImageSizeInverse: false;
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -64,19 +72,17 @@ let frameTimeLastMS = 0, frameTimeBufferMS = 0, debugFPS = 0,
  *  @param {String} tileImageSource  - Tile image to use, everything starts when the image is finished loading
  */
 
-function engineInit(gameInit: any, gameUpdate: any, gameUpdatePost: any, gameRender: any, gameRenderPost: any, tileImageSource: any)
-{
+ export function engineInit(gameInit: any, gameUpdate: any, gameUpdatePost: any, gameRender: any, gameRenderPost: any, tileImageSource: any) {
     // init engine when tiles load
-    tileImage.onload = ()=>
-    {
+    tileImage.onload = () => {
         // save tile image info
 
         // @ts-expect-error ts-migrate(2554) FIXME: Expected 2 arguments, but got 1.
         tileImageSizeInverse = vec2(1).divide(tileImageSize = vec2(tileImage.width, tileImage.height));
 
-        debug && (tileImage.onload=()=>ASSERT(1)); // tile sheet can not reloaded
-        shrinkTilesX = tileBleedShrinkFix/tileImageSize.x;
-        shrinkTilesY = tileBleedShrinkFix/tileImageSize.y;
+        debug && (tileImage.onload = () => ASSERT(1)); // tile sheet can not reloaded
+        shrinkTilesX = tileBleedShrinkFix / tileImageSize.x;
+        shrinkTilesY = tileBleedShrinkFix / tileImageSize.y;
 
         // setup html
         document.body.appendChild(mainCanvas = document.createElement('canvas'));
@@ -101,15 +107,14 @@ function engineInit(gameInit: any, gameUpdate: any, gameUpdatePost: any, gameRen
     };
 
     // main update loop
-    const engineUpdate = (frameTimeMS=0)=>
-    {
+    const engineUpdate = (frameTimeMS = 0) => {
         requestAnimationFrame(engineUpdate);
 
         // update time keeping
         let frameTimeDeltaMS = frameTimeMS - frameTimeLastMS;
         frameTimeLastMS = frameTimeMS;
         if (debug || showWatermark)
-            debugFPS = lerp(.05, 1e3/(frameTimeDeltaMS||1), debugFPS);
+            debugFPS = lerp(.05, 1e3 / (frameTimeDeltaMS || 1), debugFPS);
         if (debug)
             frameTimeDeltaMS *= keyIsDown(107) ? 5 : keyIsDown(109) ? .2 : 1; // +/- to speed/slow time
         timeReal += frameTimeDeltaMS / 1e3;
@@ -117,28 +122,24 @@ function engineInit(gameInit: any, gameUpdate: any, gameUpdatePost: any, gameRen
         // @ts-expect-error ts-migrate(2362) FIXME: The left-hand side of an arithmetic operation must... Remove this comment to see the full error message
         frameTimeBufferMS = min(frameTimeBufferMS + !paused * frameTimeDeltaMS, 50); // clamp incase of slow framerate
 
-        if (paused)
-        {
+        if (paused) {
             // do post update even when paused
             inputUpdate();
             debugUpdate();
             gameUpdatePost();
             inputUpdatePost();
         }
-        else
-        {
+        else {
             // apply time delta smoothing, improves smoothness of framerate in some browsers
             let deltaSmooth = 0;
-            if (frameTimeBufferMS < 0 && frameTimeBufferMS > -9)
-            {
+            if (frameTimeBufferMS < 0 && frameTimeBufferMS > -9) {
                 // force an update each frame if time is close enough (not just a fast refresh rate)
                 deltaSmooth = frameTimeBufferMS;
                 frameTimeBufferMS = 0;
             }
-            
+
             // update multiple frames if necessary in case of slow framerate
-            for (;frameTimeBufferMS >= 0; frameTimeBufferMS -= 1e3 / FPS)
-            {
+            for (; frameTimeBufferMS >= 0; frameTimeBufferMS -= 1e3 / FPS) {
                 // update game and objects
                 inputUpdate();
                 gameUpdate();
@@ -154,33 +155,29 @@ function engineInit(gameInit: any, gameUpdate: any, gameUpdatePost: any, gameRen
             frameTimeBufferMS += deltaSmooth;
         }
 
-        if (fixedWidth)
-        {
+        if (fixedWidth) {
             // clear set fixed size
-            mainCanvas.width  = fixedWidth;
+            mainCanvas.width = fixedWidth;
             mainCanvas.height = fixedHeight;
-            
-            if (fixedFitToWindow)
-            {
+
+            if (fixedFitToWindow) {
                 // fit to window by adding space on top or bottom if necessary
                 const aspect = innerWidth / innerHeight;
                 const fixedAspect = fixedWidth / fixedHeight;
-                mainCanvas.style.width  = overlayCanvas.style.width  = aspect < fixedAspect ? '100%' : '';
+                mainCanvas.style.width = overlayCanvas.style.width = aspect < fixedAspect ? '100%' : '';
                 mainCanvas.style.height = overlayCanvas.style.height = aspect < fixedAspect ? '' : '100%';
-                if (glCanvas)
-                {
-                    glCanvas.style.width  = mainCanvas.style.width;
+                if (glCanvas) {
+                    glCanvas.style.width = mainCanvas.style.width;
                     glCanvas.style.height = mainCanvas.style.height;
                 }
             }
         }
-        else
-        {
+        else {
             // clear and set size to same as window
-            mainCanvas.width  = min(innerWidth,  maxWidth);
+            mainCanvas.width = min(innerWidth, maxWidth);
             mainCanvas.height = min(innerHeight, maxHeight);
         }
-        
+
         // save canvas size and clear overlay canvas
         mainCanvasSize = vec2(overlayCanvas.width = mainCanvas.width, overlayCanvas.height = mainCanvas.height);
         mainContext.imageSmoothingEnabled = !pixelated; // disable smoothing for pixel art
@@ -190,7 +187,7 @@ function engineInit(gameInit: any, gameUpdate: any, gameUpdatePost: any, gameRen
         gameRender();
 
         // @ts-expect-error ts-migrate(7006) FIXME: Parameter 'a' implicitly has an 'any' type.
-        engineObjects.sort((a,b)=> a.renderOrder - b.renderOrder);
+        engineObjects.sort((a, b) => a.renderOrder - b.renderOrder);
         for (const o of engineObjects)
             o.destroyed || o.render();
         gameRenderPost();
@@ -200,18 +197,17 @@ function engineInit(gameInit: any, gameUpdate: any, gameUpdatePost: any, gameRen
         // @ts-expect-error ts-migrate(2554) FIXME: Expected 2 arguments, but got 1.
         glCopyToContext(mainContext);
 
-        if (showWatermark)
-        {
+        if (showWatermark) {
             // update fps
             overlayContext.textAlign = 'right';
             overlayContext.textBaseline = 'top';
             overlayContext.font = '1em monospace';
             overlayContext.fillStyle = '#000';
-            const text = engineName + ' ' + 'v' + engineVersion + ' / ' 
+            const text = engineName + ' ' + 'v' + engineVersion + ' / '
                 + drawCount + ' / ' + engineObjects.length + ' / ' + debugFPS.toFixed(1);
-            overlayContext.fillText(text, mainCanvas.width-3, 3);
+            overlayContext.fillText(text, mainCanvas.width - 3, 3);
             overlayContext.fillStyle = '#fff';
-            overlayContext.fillText(text, mainCanvas.width-2, 2);
+            overlayContext.fillText(text, mainCanvas.width - 2, 2);
             drawCount = 0;
         }
     }
@@ -227,12 +223,10 @@ function engineInit(gameInit: any, gameUpdate: any, gameUpdatePost: any, gameRen
 
 /** Calls update on each engine object (recursively if child), removes destroyed objects, and updated time */
 
-function engineObjectsUpdate()
-{
+export function engineObjectsUpdate() {
     // recursive object update
     const updateObject = (o: any) => {
-        if (!o.destroyed)
-        {
+        if (!o.destroyed) {
             o.update();
             for (const child of o.children)
                 updateObject(child);
@@ -244,10 +238,10 @@ function engineObjectsUpdate()
     // remove destroyed objects
 
     // @ts-expect-error ts-migrate(7006) FIXME: Parameter 'o' implicitly has an 'any' type.
-    engineObjects = engineObjects.filter(o=>!o.destroyed);
+    engineObjects = engineObjects.filter(o => !o.destroyed);
 
     // @ts-expect-error ts-migrate(7006) FIXME: Parameter 'o' implicitly has an 'any' type.
-    engineCollideObjects = engineCollideObjects.filter(o=>!o.destroyed);
+    engineCollideObjects = engineCollideObjects.filter(o => !o.destroyed);
 
     // increment frame and update time
     time = ++frame / FPS;
@@ -255,13 +249,12 @@ function engineObjectsUpdate()
 
 /** Detroy and remove all objects that are not persistent or descendants of a persistent object */
 
-function engineObjectsDestroy()
-{
+export function engineObjectsDestroy() {
     for (const o of engineObjects)
         o.persistent || o.parent || o.destroy();
 
     // @ts-expect-error ts-migrate(7006) FIXME: Parameter 'o' implicitly has an 'any' type.
-    engineObjects = engineObjects.filter(o=>!o.destroyed);
+    engineObjects = engineObjects.filter(o => !o.destroyed);
 }
 
 /** Triggers a callback for each object within a given area
@@ -271,25 +264,38 @@ function engineObjectsDestroy()
  *  @param {Array} [objects=engineObjects] - List of objects to check */
 
 
-function engineObjectsCallback(pos: any, size: any, callbackFunction: any, objects=engineObjects)
-{
-    if (!pos)
-    {
+ export function engineObjectsCallback(pos: any, size: any, callbackFunction: any, objects = engineObjects) {
+    if (!pos) {
         // all objects
         for (const o of objects)
             callbackFunction(o);
     }
-    else if (size.x != undefined)
-    {
+    else if (size.x != undefined) {
         // aabb test
         for (const o of objects)
             isOverlapping(pos, size, o.pos, o.size) && callbackFunction(o);
     }
-    else
-    {
+    else {
         // circle test
-        const sizeSquared = size*size;
+        const sizeSquared = size * size;
         for (const o of objects)
             pos.distanceSquared(o.pos) < sizeSquared && callbackFunction(o);
     }
+}
+
+function keyIsDown(arg0: number) {
+    throw new Error("Function not implemented.");
+    return false;
+}
+
+
+function inputUpdate() {
+    throw new Error("Function not implemented.");
+    return false;
+}
+
+
+function inputUpdatePost() {
+    throw new Error("Function not implemented.");
+    return false;
 }

@@ -1,3 +1,11 @@
+import { debugLine, ASSERT } from './engineDebug';
+import { mainContext, worldToScreen, mainCanvasSize, mainCanvas, drawTile, tileImage } from './engineDraw';
+import { EngineObject } from './engineObject';
+import { debugRaycast } from './engineRelease';
+import { defaultTileSize, cameraScale, cameraPos, pixelated } from './engineSettings';
+import { abs, Color, max, min, PI, sign, vec2, Vector2 } from './engineUtilities';
+import { glPreRender, glCopyToContext } from './engineWebGL';
+
 /** 
  *  LittleJS Tile Layer System
  *  <br> - Caches arrays of tiles to offscreen canvas for fast rendering
@@ -9,20 +17,17 @@
  *  @namespace TileLayer
  */
 
-'use strict';
-
 ///////////////////////////////////////////////////////////////////////////////
 // Tile Collision
 
 // Internal variables not exposed to documentation
 
-// @ts-expect-error ts-migrate(2451) FIXME: Cannot redeclare block-scoped variable 'tileCollis... Remove this comment to see the full error message
 let tileCollision: Array<any> = [], tileCollisionSize = vec2();
 
 /** Clear and initialize tile collision
  *  @param {Vector2} size
  *  @memberof TileLayer */
-function initTileCollision(size: any)
+ export function initTileCollision(size: any)
 {
     tileCollisionSize = size;
     tileCollision = [];
@@ -35,7 +40,7 @@ function initTileCollision(size: any)
  *  @param {Number}  [data=0]
  *  @memberof TileLayer */
 
-const setTileCollisionData = (pos: any, data=0)=>
+ export const setTileCollisionData = (pos: any, data=0)=>
     pos.arrayCheck(tileCollisionSize) && (tileCollision[(pos.y|0)*tileCollisionSize.x+pos.x|0] = data);
 
 /** Get tile collision data
@@ -43,7 +48,7 @@ const setTileCollisionData = (pos: any, data=0)=>
  *  @return {Number}
  *  @memberof TileLayer */
 
-const getTileCollisionData = (pos: any) => pos.arrayCheck(tileCollisionSize) ? tileCollision[(pos.y|0)*tileCollisionSize.x+pos.x|0] : 0;
+ export const getTileCollisionData = (pos: any) => pos.arrayCheck(tileCollisionSize) ? tileCollision[(pos.y|0)*tileCollisionSize.x+pos.x|0] : 0;
 
 /** Check if collision with another object should occur
  *  @param {Vector2}      pos
@@ -52,8 +57,7 @@ const getTileCollisionData = (pos: any) => pos.arrayCheck(tileCollisionSize) ? t
  *  @return {Boolean}
  *  @memberof TileLayer */
 
-// @ts-expect-error ts-migrate(2554) FIXME: Expected 2 arguments, but got 0.
-function tileCollisionTest(pos: any, size=vec2(), object: any)
+ export function tileCollisionTest(pos: any, size=vec2(), object: any)
 {
     const minX = max(Math.floor(pos.x - size.x/2), 0);
     const minY = max(Math.floor(pos.y - size.y/2), 0);
@@ -74,7 +78,7 @@ function tileCollisionTest(pos: any, size=vec2(), object: any)
  *  @param {EngineObject} [object]
  *  @return {Vector2}
  *  @memberof TileLayer */
-function tileCollisionRaycast(posStart: any, posEnd: any, object: any)
+ export function tileCollisionRaycast(posStart: any, posEnd: any, object: any)
 {
     // test if a ray collides with tiles from start to end
     // todo: a way to get the exact hit point, it must still register as inside the hit tile
@@ -115,11 +119,11 @@ function tileCollisionRaycast(posStart: any, posEnd: any, object: any)
 
 // Reuse canvas autmatically when destroyed
 
-const tileLayerCanvasCache: Array<any> = [];
+export const tileLayerCanvasCache: Array<any> = [];
 
 /** Tile layer data object stores info about how to render a tile */
 
-class TileLayerData
+export class TileLayerData
 {
     color: any;
     direction: any;
@@ -147,7 +151,7 @@ class TileLayerData
 
 /** Tile layer object - cached rendering system for tile layers */
 
-class TileLayer extends EngineObject
+export class TileLayer extends EngineObject
 {
     canvas: any;
     context: any;
@@ -162,7 +166,6 @@ class TileLayer extends EngineObject
      *  @param {Number}  [renderOrder=0] - Objects sorted by renderOrder before being rendered
      */
 
-    // @ts-expect-error ts-migrate(2554) FIXME: Expected 2 arguments, but got 1.
     constructor(pos: any, size: any, scale=vec2(1), renderOrder=0)
     {
 
@@ -287,10 +290,8 @@ class TileLayer extends EngineObject
     {
         // first clear out where the tile was
 
-        // @ts-expect-error ts-migrate(2554) FIXME: Expected 2 arguments, but got 1.
         const pos = layerPos.floor().add(this.pos).add(vec2(.5));
 
-        // @ts-expect-error ts-migrate(2554) FIXME: Expected 2 arguments, but got 1.
         this.drawCanvas2D(pos, vec2(1), 0, 0, (context: any) => context.clearRect(-.5, -.5, 1, 1));
 
         // draw the tile if not undefined
@@ -300,7 +301,6 @@ class TileLayer extends EngineObject
 
             ASSERT(mainContext == this.context); // must call redrawStart() before drawing tiles
 
-            // @ts-expect-error ts-migrate(2554) FIXME: Expected 2 arguments, but got 1.
             drawTile(pos, vec2(1), d.tile, this.tileSize, d.color, d.direction*PI/2, d.mirror);
         }
     }
@@ -341,7 +341,6 @@ class TileLayer extends EngineObject
      *  @param {Number}  [angle=0]
      *  @param {Boolean} [mirror=0] */
 
-    // @ts-expect-error ts-migrate(2554) FIXME: Expected 2 arguments, but got 1.
     drawTile(pos: any, size=vec2(1), tileIndex=-1, tileSize=defaultTileSize, color=new Color, angle=0, mirror: any)
     {
         this.drawCanvas2D(pos, size, angle, mirror, (context: any) => {
@@ -368,6 +367,5 @@ class TileLayer extends EngineObject
      *  @param {Color}   [color=new Color(1,1,1)]
      *  @param {Number}  [angle=0] */
 
-    // @ts-expect-error ts-migrate(2345) FIXME: Argument of type '0' is not assignable to paramete... Remove this comment to see the full error message
-    drawRect(pos: any, size: any, color: any, angle: any) { this.drawTile(pos, size, -1, 0, color, angle, 0); }
+    drawRect(pos: any, size: any, color: any, angle: any) { this.drawTile(pos, size, -1, undefined, color, angle, 0); }
 }

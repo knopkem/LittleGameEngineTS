@@ -1,3 +1,9 @@
+import { ASSERT } from "./engineDebug";
+import { debugMedals } from "./engineRelease";
+import { overlayCanvas, overlayContext } from "./engineDraw";
+import { defaultFont, medalDisplayHeight, medalDisplayWidth, medalDisplayIconSize, medalDisplayTime, medalDisplaySlideTime } from "./engineSettings";
+import { timeReal } from "./engine";
+
 /** 
  *  LittleJS Medal System
  *  <br> - Tracks and displays medals
@@ -9,16 +15,16 @@
 
 /** List of all medals
  *  @memberof Medals */
-const medals: any = [];
+export const medals: any = [];
 
 /** Set to stop medals from being unlockable (like if cheats are enabled)
  *  @memberof Medals */
-let medalsPreventUnlock: boolean;
+ export let medalsPreventUnlock: boolean;
 
 /** This can used to enable Newgrounds functionality
  *  @type {Newgrounds}
  *  @memberof Medals */
-let newgrounds: any;
+ export let newgrounds: any;
 
 // Engine internal variables not exposed to documentation
 let medalsDisplayQueue: any = [], medalsSaveName: string, medalsDisplayTimer: number;
@@ -30,7 +36,7 @@ let medalsDisplayQueue: any = [], medalsSaveName: string, medalsDisplayTimer: nu
  *  <br> - Call this after creating all medals
  *  @param {String} saveName
  *  @memberof Medals */
-function medalsInit(saveName: any)
+ export function medalsInit(saveName: any)
 {
     // check if medals are unlocked
     medalsSaveName = saveName;
@@ -38,7 +44,7 @@ function medalsInit(saveName: any)
 }
 
 /** Medal Object - Tracks an unlockable medal */
-class Medal
+export class Medal
 {
     description: any;
     icon: any;
@@ -146,7 +152,7 @@ class Medal
 }
 
 // engine automatically renders medals
-function medalsRender()
+export function medalsRender()
 {
     if (!medalsDisplayQueue.length)
         return;
@@ -172,7 +178,7 @@ function medalsRender()
 ///////////////////////////////////////////////////////////////////////////////
 
 /** Newgrounds API wrapper object */
-class Newgrounds
+export class Newgrounds
 {
     app_id: any;
     cipher: any;

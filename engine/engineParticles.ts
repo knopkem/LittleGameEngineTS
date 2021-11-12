@@ -7,6 +7,14 @@
 
 'use strict';
 
+import { timeDelta, time } from "./engine";
+import { debugRect } from "./engineDebug";
+import { setBlendMode, drawTile } from "./engineDraw";
+import { EngineObject } from "./engineObject";
+import { debugParticles } from "./engineRelease";
+import { defaultTileSize } from "./engineSettings";
+import { PI, Color, vec2, Vector2, rand, randInCircle, randSign, randColor, min, max } from "./engineUtilities";
+
 /**
  * Particle Emitter - Spawns particles with the given settings
  */
@@ -151,7 +159,6 @@ class ParticleEmitter extends EngineObject
             this.destroy();
 
 
-        // @ts-expect-error ts-migrate(2554) FIXME: Expected 0 arguments, but got 5.
         debugParticles && debugRect(this.pos, vec2(this.emitSize), '#0f0', 0, this.angle);
     }
 

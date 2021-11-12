@@ -1,8 +1,20 @@
+import { ASSERT, debugAABB } from "./engineDebug";
+import { abs, isOverlapping, lerp, max, randVector, sign, vec2, Vector2 } from "./engineUtilities";
+import { defaultObjectSize, defaultTileSize, defaultObjectMass, defaultObjectDamping, defaultObjectAngleDamping, defaultObjectElasticity, defaultObjectFriction } from "./engineSettings";
+import { time, engineObjects } from "./engine";
+import { clamp } from "./engineUtilities";
+import { maxObjectSpeed } from "./engineSettings";
+import { gravity } from "./engineSettings";
+import { engineCollideObjects } from "./engine";
+import { debugPhysics } from "./engineRelease";
+import { drawTile } from "./engineDraw";
+import { tileCollisionTest } from "./engineTileLayer";
+
+
 /*
     LittleJS Object System
 */
 
-'use strict';
 
 /** 
  *  LittleJS Object Base Object Class
@@ -18,7 +30,7 @@
  *  <br> - Call destroy() to get rid of objects
  */
 
-class EngineObject
+export class EngineObject
 {
     additiveColor: any;
     angle: any;
@@ -58,7 +70,6 @@ class EngineObject
      * @param {Color}   [color] - Color to apply to tile when rendered
      */
 
-    // @ts-expect-error ts-migrate(2554) FIXME: Expected 2 arguments, but got 0.
     constructor(pos=vec2(), size=defaultObjectSize, tileIndex=-1, tileSize=defaultTileSize, angle=0, color: any)
     {
         // set passed in params
@@ -81,7 +92,6 @@ class EngineObject
         // init other object stuff
         this.spawnTime = time;
 
-        // @ts-expect-error ts-migrate(2554) FIXME: Expected 2 arguments, but got 1.
         this.velocity = vec2(this.collideSolidObjects = this.renderOrder = this.angleVelocity = 0);
         this.collideTiles = this.gravityScale = 1;
         this.children = [];
@@ -335,7 +345,6 @@ class EngineObject
      *  @param {Vector2}      [localPos=new Vector2]
      *  @param {Number}       [localAngle=0] */
 
-    // @ts-expect-error ts-migrate(2554) FIXME: Expected 2 arguments, but got 0.
     addChild(child: any, localPos=vec2(), localAngle=0)
     {
 

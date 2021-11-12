@@ -1,3 +1,10 @@
+import { engineName, engineObjects, time,  } from "./engine";
+import { mainContext, overlayCanvas, mainCanvas, drawLine, overlayContext, drawText, worldToScreen } from "./engineDraw";
+import { gamepadsEnable, cameraPos, cameraScale } from "./engineSettings";
+import { clamp, Color, formatTime, max, min, PI, Timer, vec2 } from "./engineUtilities";
+import { glCopyToContext } from "./engineWebGL";
+import { stickData } from './engineInput';
+
 /** 
  *  LittleJS Medal System
  *  <br> - Debug overlay with mouse pick
@@ -6,34 +13,30 @@
  *  @namespace Debug
  */
 
-
-// @ts-expect-error ts-migrate(6200) FIXME: Definitions of the following identifiers conflict ... Remove this comment to see the full error message
-'use strict';
-
 /** True if debug is enabled
  *  @default
  *  @memberof Debug */
-const debug = 1;
+export const debug = 1;
 
 /** True if asserts are enaled
  *  @default
  *  @memberof Debug */
-const enableAsserts = 1;
+export const enableAsserts = 1;
 
 /** Size to render debug points by default
  *  @default
  *  @memberof Debug */
-const debugPointSize = .5;
+export const debugPointSize = .5;
 
 /** True if watermark with FPS should be down
  *  @default
  *  @memberof Debug */
-let showWatermark = 1;
+ export const showWatermark = 1;
 
 /** True if god mode is enabled, handle this however you want
  *  @default
  *  @memberof Debug */
-let godMode = 0;
+ export const godMode = 0;
 
 // Engine internal variables not exposed to documentation
 let debugPrimitives: any = [], debugOverlay = 0, debugPhysics = 0, debugRaycast = 0, 
@@ -46,7 +49,7 @@ debugParticles = 0, debugGamepads = 0, debugMedals = 0, debugTakeScreenshot: any
  *  @param {Boolean} assertion
  *  @param {Object}  output
  *  @memberof Debug */
-const ASSERT = enableAsserts ? (...assert: any[])=> console.assert(...assert) : ()=>{};
+ export const ASSERT = enableAsserts ? (...assert: any[])=> console.assert(...assert) : ()=>{};
 
 /** Draw a debug rectangle in world space
  *  @param {Vector2} pos
@@ -57,14 +60,12 @@ const ASSERT = enableAsserts ? (...assert: any[])=> console.assert(...assert) : 
  *  @param {Boolean} [fill=0]
  *  @memberof Debug */
 
-// @ts-expect-error ts-migrate(2554) FIXME: Expected 2 arguments, but got 0.
-const debugRect = (pos: any, size=vec2(), color='#fff', time=0, angle=0, fill=0)=> 
+ export const debugRect = (pos: any, size=vec2(), color='#fff', time=0, angle=0, fill=0)=> 
 {
 
     ASSERT(typeof color == 'string'); // pass in regular html strings as colors
 
-    // @ts-expect-error ts-migrate(2554) FIXME: Expected 2 arguments, but got 1.
-    debugPrimitives.push({pos, size:vec2(size), color, time:new Timer(time), angle, fill});
+    debugPrimitives.push({pos, size:vec2(size.x, size.y), color, time:new Timer(time), angle, fill});
 }
 
 /** Draw a debug circle in world space
@@ -74,7 +75,7 @@ const debugRect = (pos: any, size=vec2(), color='#fff', time=0, angle=0, fill=0)
  *  @param {Number}  [time=0]
  *  @param {Boolean} [fill=0]
  *  @memberof Debug */
-const debugCircle = (pos: any, radius=0, color='#fff', time=0, fill=0)=>
+ export const debugCircle = (pos: any, radius=0, color='#fff', time=0, fill=0)=>
 {
 
     ASSERT(typeof color == 'string'); // pass in regular html strings as colors
@@ -89,7 +90,7 @@ const debugCircle = (pos: any, radius=0, color='#fff', time=0, fill=0)=>
  *  @memberof Debug */
 
 // @ts-expect-error ts-migrate(2554) FIXME: Expected 0 arguments, but got 5.
-const debugPoint = (pos: any, color: any, time: any, angle: any)=> debugRect(pos, 0, color, time, angle);
+export const debugPoint = (pos: any, color: any, time: any, angle: any)=> debugRect(pos, 0, color, time, angle);
 
 /** Draw a debug line in world space
  *  @param {Vector2} posA
@@ -98,7 +99,7 @@ const debugPoint = (pos: any, color: any, time: any, angle: any)=> debugRect(pos
  *  @param {Number}  [thickness=.1]
  *  @param {Number}  [time=0]
  *  @memberof Debug */
-const debugLine = (posA: any, posB: any, color: any, thickness=.1, time: any)=>
+ export const debugLine = (posA: any, posB: any, color: any, thickness=.1, time: any)=>
 {
     const halfDelta = vec2((posB.x - posA.x)/2, (posB.y - posA.y)/2);
     const size = vec2(thickness, halfDelta.length()*2);
@@ -113,7 +114,7 @@ const debugLine = (posA: any, posB: any, color: any, thickness=.1, time: any)=>
  *  @param {Vector2} sizeB
  *  @param {String}  [color='#fff']
  *  @memberof Debug */
-const debugAABB = (pA: any, sA: any, pB: any, sB: any, color: any)=>
+ export const debugAABB = (pA: any, sA: any, pB: any, sB: any, color: any)=>
 {
     const minPos = vec2(min(pA.x - sA.x/2, pB.x - sB.x/2), min(pA.y - sA.y/2, pB.y - sB.y/2));
     const maxPos = vec2(max(pA.x + sA.x/2, pB.x + sB.x/2), max(pA.y + sA.y/2, pB.y + sB.y/2));
@@ -130,7 +131,7 @@ const debugAABB = (pA: any, sA: any, pB: any, sB: any, color: any)=>
  *  @param {Number}  [angle=0]
  *  @param {String}  [font='monospace']
  *  @memberof Debug */
-const debugText = (text: any, pos: any, size=1, color='#fff', time=0, angle=0, font='monospace')=> 
+ export const debugText = (text: any, pos: any, size=1, color='#fff', time=0, angle=0, font='monospace')=> 
 {
 
     ASSERT(typeof color == 'string'); // pass in regular html strings as colors
@@ -139,13 +140,13 @@ const debugText = (text: any, pos: any, size=1, color='#fff', time=0, angle=0, f
 
 /** Clear all debug primitives in the list
  *  @memberof Debug */
-const debugClear = ()=> debugPrimitives = [];
+ export const debugClear = ()=> debugPrimitives = [];
 
 /** Save a canvas to disk 
  *  @param {HTMLCanvasElement} canvas
  *  @param {String}            [filename]
  *  @memberof Debug */
-const debugSaveCanvas = (canvas: any, filename = engineName + '.png') =>
+ export const debugSaveCanvas = (canvas: any, filename = engineName + '.png') =>
 {
     downloadLink.download = 'screenshot.png';
     downloadLink.href = canvas.toDataURL('image/png').replace('image/png','image/octet-stream');
@@ -155,14 +156,14 @@ const debugSaveCanvas = (canvas: any, filename = engineName + '.png') =>
 ///////////////////////////////////////////////////////////////////////////////
 // Engine debug function (called automatically)
 
-const debugInit = ()=>
+export const debugInit = ()=>
 {
     // create link for saving screenshots
     document.body.appendChild(downloadLink = document.createElement('a'));
     downloadLink.style.display = 'none';
 }
 
-const debugUpdate = ()=>
+export const debugUpdate = ()=>
 {
     if (!debug)
         return;
@@ -199,7 +200,7 @@ const debugUpdate = ()=>
         showWatermark = !showWatermark;
 }
 
-const debugRender = ()=>
+export const debugRender = ()=>
 {
 
     // @ts-expect-error ts-migrate(2554) FIXME: Expected 2 arguments, but got 1.
@@ -438,7 +439,7 @@ const debugRender = ()=>
 // particle system editor (work in progress)
 let debugParticleEditor = 0, debugParticleSystem: any, debugParticleSystemDiv: any, particleSystemCode: any;
 
-const debugToggleParticleEditor = ()=>
+export const debugToggleParticleEditor = ()=>
 {
 
     // @ts-expect-error ts-migrate(2322) FIXME: Type 'boolean' is not assignable to type 'number'.
@@ -596,7 +597,7 @@ const debugToggleParticleEditor = ()=>
     debugParticleSystemDiv.style.display = debugParticleEditor ? '' : 'none'
 }
 
-const debugParticleSettings = 
+export const debugParticleSettings = 
 [
     ['emitSize'],
     ['emitTime'],
@@ -627,3 +628,12 @@ const debugParticleSettings =
     ['randomColorComponents'],
     ['renderOrder'],
 ];
+
+function keyWasPressed(arg0: number) {
+    throw new Error("Function not implemented.");
+}
+
+
+function mousePos(mousePos: any, pos: any, arg2: number, arg3: Color) {
+    throw new Error("Function not implemented.");
+}

@@ -9,29 +9,33 @@
  *  @namespace WebGL
  */
 
+import { debug } from "./engineDebug";
+import { tileImage, mainCanvas } from "./engineDraw";
+import { glEnable, pixelated, glOverlay, cameraScale, cameraPos } from "./engineSettings";
+
 
 /** The WebGL canvas which appears above the main canvas and below the overlay canvas
  *  @type {HTMLCanvasElement}
  *  @memberof WebGL */
-let glCanvas: any;
+export let glCanvas: any;
 
 /** 2d context for glCanvas 
  *  @type {WebGLRenderingContext}
  *  @memberof WebGL */
-let glContext: any;
+ export let glContext: any;
 
 /** Main tile sheet texture automatically loaded by engine
  *  @type {WebGLTexture}
  *  @memberof WebGL */
-let glTileTexture: any;
+ export let glTileTexture: any;
 
 // WebGL internal variables not exposed to documentation
-let glActiveTexture: any, glShader: any, glPositionData: any, glColorData, glBatchCount=0, glDirty=0, glAdditive=0;
+export let glActiveTexture: any, glShader: any, glPositionData: any, glColorData: any, glBatchCount=0, glDirty=0, glAdditive=0;
 
 ///////////////////////////////////////////////////////////////////////////////
 
 // Init WebGL, called automatically by the engine
-function glInit()
+export function glInit()
 {
     if (!glEnable) return;
 
@@ -96,7 +100,7 @@ function glInit()
 /** Set the WebGl blend mode, normally you should call setBlendMode instead
  *  @param {Boolean} [additive=0]
  *  @memberof WebGL */
-function glSetBlendMode(additive: any)
+ export function glSetBlendMode(additive: any)
 {
     if (!glEnable) return;
         
@@ -114,7 +118,7 @@ function glSetBlendMode(additive: any)
  *  <br> - This may also flush the gl buffer resulting in more draw calls and worse performance
  *  @param {WebGLTexture} [texture=glTileTexture]
  *  @memberof WebGL */
-function glSetTexture(texture=glTileTexture)
+ export function glSetTexture(texture=glTileTexture)
 {
     if (!glEnable) return;
         
@@ -129,7 +133,7 @@ function glSetTexture(texture=glTileTexture)
  *  @param          type
  *  @return {WebGLShader}
  *  @memberof WebGL */
-function glCompileShader(source: any, type: any)
+ export function glCompileShader(source: any, type: any)
 {
     if (!glEnable) return;
 
@@ -149,7 +153,7 @@ function glCompileShader(source: any, type: any)
  *  @param {WebGLShader} fsSource
  *  @return {WebGLProgram}
  *  @memberof WebGL */
-function glCreateProgram(vsSource: any, fsSource: any)
+ export function glCreateProgram(vsSource: any, fsSource: any)
 {
     if (!glEnable) return;
 
@@ -171,7 +175,7 @@ function glCreateProgram(vsSource: any, fsSource: any)
  *  @param usage
  *  @return {WebGLBuffer}
  *  @memberof WebGL */
-function glCreateBuffer(bufferType: any, size: any, usage: any)
+ export function glCreateBuffer(bufferType: any, size: any, usage: any)
 {
     if (!glEnable) return;
 
@@ -186,7 +190,7 @@ function glCreateBuffer(bufferType: any, size: any, usage: any)
  *  @param {Image} image
  *  @return {WebGLTexture}
  *  @memberof WebGL */
-function glCreateTexture(image: any)
+ export function glCreateTexture(image: any)
 {
     if (!glEnable) return;
 
@@ -204,7 +208,7 @@ function glCreateTexture(image: any)
 }
 
 // called automatically by engine before render
-function glPreRender(width: any, height: any)
+export function glPreRender(width: any, height: any)
 {
     if (!glEnable) return;
 
@@ -235,7 +239,7 @@ function glPreRender(width: any, height: any)
 
 /** Draw all sprites and clear out the buffer, called automatically by the system whenever necessary
  *  @memberof WebGL */
-function glFlush()
+ export function glFlush()
 {
     if (!glEnable || !glBatchCount) return;
 
@@ -250,7 +254,7 @@ function glFlush()
  *  @param {CanvasRenderingContext2D} context
  *  @param {Boolean} [forceDraw=0]
  *  @memberof WebGL */
-function glCopyToContext(context: any, forceDraw: any)
+ export function glCopyToContext(context: any, forceDraw: any)
 {
     if (!glEnable || !glDirty)  return;
     
@@ -264,7 +268,7 @@ function glCopyToContext(context: any, forceDraw: any)
 }
 
 // Draw a sprite with the given parameters, used internally by draw functions
-function glDraw(x: any, y: any, sizeX: any, sizeY: any, angle=0, uv0X=0, uv0Y=0, uv1X=1, uv1Y=1, rgba=0xffffffff, rgbaAdditive=0x00000000)
+export function glDraw(x: any, y: any, sizeX: any, sizeY: any, angle=0, uv0X=0, uv0Y=0, uv1X=1, uv1Y=1, rgba=0xffffffff, rgbaAdditive=0x00000000)
 {
     if (!glEnable) return;
     
@@ -321,7 +325,7 @@ function glDraw(x: any, y: any, sizeX: any, sizeY: any, angle=0, uv0X=0, uv0Y=0,
 
 ///////////////////////////////////////////////////////////////////////////////
 // store gl constants as integers so their name doesn't use space in minifed
-const 
+export const 
 gl_ONE = 1,
 gl_TRIANGLES = 4,
 gl_SRC_ALPHA = 770,

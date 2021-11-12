@@ -5,18 +5,17 @@
 */
 
 
-// @ts-expect-error ts-migrate(6200) FIXME: Definitions of the following identifiers conflict ... Remove this comment to see the full error message
-'use strict';
+export const debug = 0;
+export const showWatermark = 0;
+export const godMode = 0;
+export const debugOverlay = 0;
+export const debugPhysics = 0;
+export const debugParticles = 0;
+export const debugRaycast = 0;
+export const debugGamepads = 0;
+export const debugMedals = 0;
 
-const debug = 0;
-const showWatermark = 0;
-const godMode = 0;
-const debugOverlay = 0;
-const debugPhysics = 0;
-const debugParticles = 0;
-const debugRaycast = 0;
-const debugGamepads = 0;
-const debugMedals = 0;
+/*
 
 // debug commands are automatically removed from the final build
 const ASSERT          = ()=> {}
@@ -30,3 +29,5 @@ const debugLine       = ()=> {}
 const debugAABB       = ()=> {}
 const debugClear      = ()=> {}
 const debugSaveCanvas = ()=> {}
+*/
+

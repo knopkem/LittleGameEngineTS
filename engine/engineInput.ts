@@ -1,4 +1,8 @@
-// <reference path="engineSettings.ts" />
+import { sign, vec2, percent } from "./engineUtilities";
+import { screenToWorld, mainCanvas, mainCanvasSize } from "./engineDraw";
+import { debug } from "./engineDebug";
+import { touchInputEnable, gamepadsEnable, copyWASDToDpad, copyGamepadDirectionToStick } from "./engineSettings";
+import { zzfx } from "./engineAudio";
 
 /** 
  *  LittleJS Input System
@@ -15,86 +19,84 @@
  *  @param {Number} [device=0]
  *  @return {Boolean}
  *  @memberof Input */
-const keyIsDown = (key: any, device=0)=> inputData[device] && inputData[device][key] & 1 ? 1 : 0;
+export const keyIsDown = (key: any, device=0)=> inputData[device] && inputData[device][key] & 1 ? 1 : 0;
 
 /** Returns true if device key was pressed this frame
  *  @param {Number} key
  *  @param {Number} [device=0]
  *  @return {Boolean}
  *  @memberof Input */
-const keyWasPressed = (key: any, device=0)=> inputData[device] && inputData[device][key] & 2 ? 1 : 0;
+ export const keyWasPressed = (key: any, device=0)=> inputData[device] && inputData[device][key] & 2 ? 1 : 0;
 
 /** Returns true if device key was released this frame
  *  @param {Number} key
  *  @param {Number} [device=0]
  *  @return {Boolean}
  *  @memberof Input */
-const keyWasReleased = (key: any, device=0)=> inputData[device] && inputData[device][key] & 4 ? 1 : 0;
+ export const keyWasReleased = (key: any, device=0)=> inputData[device] && inputData[device][key] & 4 ? 1 : 0;
 
 /** Clears all input
  *  @memberof Input */
-const clearInput = ()=> inputData[0] = [];
+ export const clearInput = ()=> inputData[0] = [];
 
 /** Returns true if mouse button is down
  *  @param {Number} button
  *  @return {Boolean}
  *  @memberof Input */
-const mouseIsDown = keyIsDown;
+ export const mouseIsDown = keyIsDown;
 
 /** Returns true if mouse button was pressed
  *  @param {Number} button
  *  @return {Boolean}
  *  @memberof Input */
-const mouseWasPressed = keyWasPressed;
+ export const mouseWasPressed = keyWasPressed;
 
 /** Returns true if mouse button was released
  *  @param {Number} button
  *  @return {Boolean}
  *  @memberof Input */
-const mouseWasReleased = keyWasReleased;
+ export const mouseWasReleased = keyWasReleased;
 
 /** Mouse pos in world space
  *  @type {Vector2}
  *  @memberof Input */
 
-// @ts-expect-error ts-migrate(2554) FIXME: Expected 2 arguments, but got 0.
-let mousePos = vec2();
+ export let mousePos = vec2();
 
 /** Mouse pos in screen space
  *  @type {Vector2}
  *  @memberof Input */
 
-// @ts-expect-error ts-migrate(2554) FIXME: Expected 2 arguments, but got 0.
-let mousePosScreen = vec2();
+ export let mousePosScreen = vec2();
 
 /** Mouse wheel delta this frame
  *  @memberof Input */
-let mouseWheel = 0;
+ export let mouseWheel = 0;
 
 /** Returns true if user is using gamepad (has more recently pressed a gamepad button)
  *  @memberof Input */
-let usingGamepad = 0;
+ export let usingGamepad = 0;
 
 /** Returns true if gamepad button is down
  *  @param {Number} button
  *  @param {Number} [gamepad=0]
  *  @return {Boolean}
  *  @memberof Input */
-const gamepadIsDown = (button: any, gamepad=0)=> keyIsDown(button, gamepad+1);
+ export const gamepadIsDown = (button: any, gamepad=0)=> keyIsDown(button, gamepad+1);
 
 /** Returns true if gamepad button was pressed
  *  @param {Number} button
  *  @param {Number} [gamepad=0]
  *  @return {Boolean}
  *  @memberof Input */
-const gamepadWasPressed = (button: any, gamepad=0)=> keyWasPressed(button, gamepad+1);
+ export const gamepadWasPressed = (button: any, gamepad=0)=> keyWasPressed(button, gamepad+1);
 
 /** Returns true if gamepad button was released
  *  @param {Number} button
  *  @param {Number} [gamepad=0]
  *  @return {Boolean}
  *  @memberof Input */
-const gamepadWasReleased = (button: any, gamepad=0)=> keyWasReleased(button, gamepad+1);
+ export const gamepadWasReleased = (button: any, gamepad=0)=> keyWasReleased(button, gamepad+1);
 
 /** Returns gamepad stick value
  *  @param {Number} stick
@@ -102,15 +104,14 @@ const gamepadWasReleased = (button: any, gamepad=0)=> keyWasReleased(button, gam
  *  @return {Vector2}
  *  @memberof Input */
 
-// @ts-expect-error ts-migrate(2554) FIXME: Expected 2 arguments, but got 0.
-const gamepadStick = (stick: any,  gamepad=0)=> stickData[gamepad] ? stickData[gamepad][stick] || vec2() : vec2();
+ export const gamepadStick = (stick: any,  gamepad=0)=> stickData[gamepad] ? stickData[gamepad][stick] || vec2() : vec2();
 
 ///////////////////////////////////////////////////////////////////////////////
 // Input update called by engine
 
 const inputData = [[]];
 
-function inputUpdate()
+export function inputUpdate()
 {
     // clear input when lost focus (prevent stuck keys)
     document.hasFocus() || clearInput();
@@ -122,7 +123,7 @@ function inputUpdate()
     gamepadsUpdate();
 }
 
-function inputUpdatePost()
+export function inputUpdatePost()
 {
     // clear input to prepare for next frame
     for (const deviceInputData of inputData)
@@ -176,8 +177,8 @@ oncontextmenu = e=> !1; // prevent right click menu
 ///////////////////////////////////////////////////////////////////////////////
 // Gamepad input
 
-const stickData:  any = [];
-function gamepadsUpdate()
+export const stickData:  any = [];
+export function gamepadsUpdate()
 {
     if (!gamepadsEnable || !navigator.getGamepads || !document.hasFocus() && !debug)
         return;
@@ -231,7 +232,7 @@ function gamepadsUpdate()
 /** True if a touch device has been detected
  *  @const {boolean}
  *  @memberof Input */
-const isTouchDevice = touchInputEnable && window.ontouchstart !== undefined;
+ export const isTouchDevice = touchInputEnable && window.ontouchstart !== undefined;
 if (isTouchDevice)
 {
     // handle all touch events the same way

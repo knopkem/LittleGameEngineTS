@@ -1,4 +1,4 @@
-// <reference path="engineUtilities.ts" />
+import { max, vec2 } from "./engineUtilities";
 
 /**
  *  LittleJS Engine Settings
@@ -12,32 +12,32 @@
 /** The max width of the canvas, centered if window is larger
  *  @default
  *  @memberof Settings */
-const maxWidth = 1920;
+ export const maxWidth = 1920;
 
 /** The max height of the canvas, centered if window is larger
  *  @default
  *  @memberof Settings */
-const maxHeight = 1200; // up to 1080p and 16:10
+export const maxHeight = 1200; // up to 1080p and 16:10
 
 /** Fixed witdh, if enabled cavnvas size never changes
  *  @default
  *  @memberof Settings */
-let fixedWidth = 0;
+ export const fixedWidth = 0;
 
 /** Fixed height, if enabled cavnvas size never changes
  *  @default
  *  @memberof Settings */
-let fixedHeight = 0;
+ export const fixedHeight = 0;
 
 /** Fit to canvas to window by adding space on top or bottom if necessary
  *  @default
  *  @memberof Settings */
-let fixedFitToWindow = 1;
+ export const fixedFitToWindow = 1;
 
 /** Default font used for text rendering
  *  @default
  *  @memberof Settings */
-let defaultFont = 'arial';
+ export const defaultFont = 'arial';
 
 ///////////////////////////////////////////////////////////////////////////////
 // Tile sheet settings
@@ -47,18 +47,17 @@ let defaultFont = 'arial';
  *  @default
  *  @memberof Settings */
 
-// @ts-expect-error ts-migrate(2554) FIXME: Expected 2 arguments, but got 1.
-const defaultTileSize = vec2(16);
+ export const defaultTileSize = vec2(16);
 
 /** Prevent tile bleeding from neighbors in pixels
  *  @default
  *  @memberof Settings */
-const tileBleedShrinkFix = .3;
+ export const tileBleedShrinkFix = .3;
 
 /** Use crisp pixels for pixel art if true
  *  @default
  *  @memberof Settings */
-let pixelated = 1;
+ export const pixelated = 1;
 
 ///////////////////////////////////////////////////////////////////////////////
 // Object settings
@@ -68,43 +67,42 @@ let pixelated = 1;
  *  @default
  *  @memberof Settings */
 
-// @ts-expect-error ts-migrate(2554) FIXME: Expected 2 arguments, but got 1.
-const defaultObjectSize = vec2(1);
+ export const defaultObjectSize = vec2(1);
 
 /** Default object mass for collison calcuations (how heavy objects are)
  *  @default
  *  @memberof Settings */
-const defaultObjectMass = 1;
+ export const defaultObjectMass = 1;
 
 /** How much to slow velocity by each frame (0-1)
  *  @default
  *  @memberof Settings */
-const defaultObjectDamping = .99;
+ export const defaultObjectDamping = .99;
 
 /** How much to slow angular velocity each frame (0-1)
  *  @default
  *  @memberof Settings */
-const defaultObjectAngleDamping = .99;
+ export const defaultObjectAngleDamping = .99;
 
 /** How much to bounce when a collision occurs (0-1)
  *  @default
  *  @memberof Settings */
-const defaultObjectElasticity = 0;
+ export const defaultObjectElasticity = 0;
 
 /** How much to slow when touching (0-1)
  *  @default
  *  @memberof Settings */
-const defaultObjectFriction = .8;
+ export const defaultObjectFriction = .8;
 
 /** Clamp max speed to avoid fast objects missing collisions
  *  @default
  *  @memberof Settings */
-const maxObjectSpeed = 1;
+ export const maxObjectSpeed = 1;
 
 /** How much gravity to apply to objects along the Y axis, negative is down
  *  @default
  *  @memberof Settings */
-let gravity = 0;
+export const gravity = 0;
 
 ///////////////////////////////////////////////////////////////////////////////
 // Camera settings
@@ -114,13 +112,12 @@ let gravity = 0;
  *  @default
  *  @memberof Settings */
 
-// @ts-expect-error ts-migrate(2554) FIXME: Expected 2 arguments, but got 0.
-let cameraPos = vec2();
+export const cameraPos = vec2();
 
 /** Scale of camera in world space
  *  @default
  *  @memberof Settings */
-let cameraScale = max(defaultTileSize.x, defaultTileSize.y);
+export const cameraScale = max(defaultTileSize.x, defaultTileSize.y);
 
 ///////////////////////////////////////////////////////////////////////////////
 // WebGL settings
@@ -128,12 +125,12 @@ let cameraScale = max(defaultTileSize.x, defaultTileSize.y);
 /** Enable webgl rendering, webgl can be disabled and removed from build (with some features disabled)
  *  @default
  *  @memberof Settings */
-const glEnable = 1;
+ export const glEnable = 1;
 
 /** Fixes slow rendering in some browsers by not compositing the WebGL canvas
  *  @default
  *  @memberof Settings */
-let glOverlay = 1;
+ export const glOverlay = 1;
 
 ///////////////////////////////////////////////////////////////////////////////
 // Input settings
@@ -141,22 +138,22 @@ let glOverlay = 1;
 /** Should gamepads be allowed
  *  @default
  *  @memberof Settings */
-const gamepadsEnable = 1;
+ export const gamepadsEnable = 1;
 
 /** If true touch input is routed to mouse functions
  *  @default
  *  @memberof Settings */
-var touchInputEnable = 1;
+ export const touchInputEnable = 1;
 
 /** Allow players to use dpad as analog stick
  *  @default
  *  @memberof Settings */
-const copyGamepadDirectionToStick = 1;
+ export const copyGamepadDirectionToStick = 1;
 
 /** allow players to use WASD as direction keys
  *  @default
  *  @memberof Settings */
-const copyWASDToDpad = 1;
+ export const copyWASDToDpad = 1;
 
 ///////////////////////////////////////////////////////////////////////////////
 // Audio settings
@@ -164,22 +161,22 @@ const copyWASDToDpad = 1;
 /** All audio code can be disabled and removed from build
  *  @default
  *  @memberof Settings */
-const soundEnable = 1;
+ export const soundEnable = 1;
 
 /** Volume scale to apply to all sound, music and speech
  *  @default
  *  @memberof Settings */
-let audioVolume = .5;
+ export const audioVolume = .5;
 
 /** Default range where sound no longer plays
  *  @default
  *  @memberof Settings */
-const defaultSoundRange = 30;
+ export const defaultSoundRange = 30;
 
 /** Default range percent to start tapering off sound (0-1)
  *  @default
  *  @memberof Settings */
-const defaultSoundTaper = .7;
+ export const defaultSoundTaper = .7;
 
 ///////////////////////////////////////////////////////////////////////////////
 // Medals settings
@@ -187,24 +184,24 @@ const defaultSoundTaper = .7;
 /** How long to show medals for in seconds
  *  @default
  *  @memberof Settings */
-const medalDisplayTime = 5;
+ export const medalDisplayTime = 5;
 
 /** How quickly to slide on/off medals in seconds
  *  @default
  *  @memberof Settings */
-const medalDisplaySlideTime = .5;
+ export const medalDisplaySlideTime = .5;
 
 /** Width of medal display
  *  @default
  *  @memberof Settings */
-const medalDisplayWidth = 640;
+ export const medalDisplayWidth = 640;
 
 /** Height of medal display
  *  @default
  *  @memberof Settings */
-const medalDisplayHeight = 99;
+ export const medalDisplayHeight = 99;
 
 /** Size of icon in medal display
  *  @default
  *  @memberof Settings */
-const medalDisplayIconSize = 80;
+ export const medalDisplayIconSize = 80;

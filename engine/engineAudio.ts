@@ -1,3 +1,7 @@
+import { worldToScreen, mainCanvas } from './engineDraw';
+import { defaultSoundRange, defaultSoundTaper, soundEnable, cameraPos, audioVolume } from './engineSettings';
+import { percent, rand, clamp, abs, PI, vec2 } from './engineUtilities';
+
 /** 
  *  LittleJS Audio System
  *  <br> - ZzFX Sound Effects and ZzFXM Music
@@ -8,12 +12,9 @@
  *  @namespace Audio
  */
 
-'use strict';
-
 /** Sound Object - Stores a zzfx sound for later use and can be played positionally */
 
-class Sound
-{
+export class Sound {
     cachedSamples: any;
     randomness: any;
     range: any;
@@ -23,8 +24,7 @@ class Sound
      *  @param {Number} [range=defaultSoundRange] - World space max range of sound, will not play if camera is farther away
      *  @param {Number} [taper=defaultSoundTaper] - At what percentage of range should it start tapering off
      */
-    constructor(zzfxSound: any, range=defaultSoundRange, taper=defaultSoundTaper)
-    {
+    constructor(zzfxSound: any, range = defaultSoundRange, taper = defaultSoundTaper) {
         if (!soundEnable) return;
 
         this.range = range;
@@ -45,31 +45,28 @@ class Sound
      *  @param {Number}  [randomnessScale=1] - How much to scale randomness
      *  @return {AudioBufferSourceNode} - The audio, can be used to stop sound later
      */
-    play(pos: any, volume=1, pitch=1, randomnessScale=1)
-    {
+    play(pos: any, volume = 1, pitch = 1, randomnessScale = 1) {
         if (!soundEnable) return;
 
         let pan = 0;
-        if (pos)
-        {
+        if (pos) {
             const range = this.range;
-            if (range)
-            {
+            if (range) {
                 // apply range based fade
                 const lengthSquared = cameraPos.distanceSquared(pos);
-                if (lengthSquared > range*range)
+                if (lengthSquared > range * range)
                     return; // out of range
 
                 // attenuate volume by distance
-                volume *= percent(lengthSquared**.5, range*this.taper, range);
+                volume *= percent(lengthSquared ** .5, range * this.taper, range);
             }
 
             // get pan from screen space coords
-            pan = worldToScreen(pos).x * 2/mainCanvas.width - 1;
+            pan = worldToScreen(pos).x * 2 / mainCanvas.width - 1;
         }
 
         // play the sound
-        const playbackRate = pitch + pitch * this.randomness*randomnessScale*rand(-1,1);
+        const playbackRate = pitch + pitch * this.randomness * randomnessScale * rand(-1, 1);
         return playSamples([this.cachedSamples], volume, playbackRate, pan);
     }
 
@@ -79,24 +76,21 @@ class Sound
      *  @param {Number}  [volume=1] - How much to scale volume by (in addition to range fade)
      *  @return {AudioBufferSourceNode} - The audio, can be used to stop sound later
      */
-    playNote(semitoneOffset: any, pos: any, volume=1)
-    {
+    playNote(semitoneOffset: any, pos: any, volume = 1) {
         if (!soundEnable) return;
 
-        return this.play(pos, volume, 2**(semitoneOffset/12), 0);
+        return this.play(pos, volume, 2 ** (semitoneOffset / 12), 0);
     }
 }
 
 /** Music Object - Stores a zzfx music track for later use */
 
-class Music
-{
+export class Music {
     cachedSamples: any;
     /** Create a music object and cache the zzfx music samples for later use
      *  @param {Array} zzfxMusic - Array of zzfx music parameters
      */
-    constructor(zzfxMusic: any)
-    {
+    constructor(zzfxMusic: any) {
         if (!soundEnable) return;
 
 
@@ -109,8 +103,7 @@ class Music
      *  @param {Boolean} [loop=1] - True if the music should loop when it reaches the end
      *  @return {AudioBufferSourceNode} - The audio node, can be used to stop sound later
      */
-    play(volume = 1, loop = 1)
-    {
+    play(volume = 1, loop = 1) {
         if (!soundEnable) return;
 
         return playSamples(this.cachedSamples, volume, 1, 0, loop);
@@ -124,8 +117,7 @@ class Music
  *  @return {HTMLAudioElement} - The audio element for this sound
  *  @memberof Audio */
 
-function playAudioFile(url: any, volume=1, loop=1)
-{
+export function playAudioFile(url: any, volume = 1, loop = 1) {
     if (!soundEnable) return;
 
     const audio = new Audio(url);
@@ -146,8 +138,7 @@ function playAudioFile(url: any, volume=1, loop=1)
  *  @return {SpeechSynthesisUtterance} - The utterance that was spoken
  *  @memberof Audio */
 
-function speak(text: any, language='', volume=1, rate=1, pitch=1)
-{
+export function speak(text: any, language = '', volume = 1, rate = 1, pitch = 1) {
     if (!soundEnable || !speechSynthesis) return;
 
     // common languages (not supported by all browsers)
@@ -157,7 +148,7 @@ function speak(text: any, language='', volume=1, rate=1, pitch=1)
     // build utterance and speak
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = language;
-    utterance.volume = 2*volume*audioVolume;
+    utterance.volume = 2 * volume * audioVolume;
     utterance.rate = rate;
     utterance.pitch = pitch;
     speechSynthesis.speak(utterance);
@@ -167,7 +158,7 @@ function speak(text: any, language='', volume=1, rate=1, pitch=1)
 /** Stop all queued speech
  *  @memberof Audio */
 
-const stopSpeech = ()=> speechSynthesis && speechSynthesis.cancel();
+export const stopSpeech = () => speechSynthesis && speechSynthesis.cancel();
 
 /** Get frequency of a note on a musical scale
  *  @param {Number} semitoneOffset - How many semitones away from the root note
@@ -175,7 +166,7 @@ const stopSpeech = ()=> speechSynthesis && speechSynthesis.cancel();
  *  @return {Number} - The frequency of the note
  *  @memberof Audio */
 
-const getNoteFrequency = (semitoneOffset: any, rootFrequency=220)=> rootFrequency * 2**(semitoneOffset/12); 
+export const getNoteFrequency = (semitoneOffset: any, rootFrequency = 220) => rootFrequency * 2 ** (semitoneOffset / 12);
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -193,30 +184,29 @@ let audioContext: any;
  *  @return {AudioBufferSourceNode} - The audio node of the sound played
  *  @memberof Audio */
 
-function playSamples(sampleChannels: any, volume=1, rate=1, pan=0, loop=0) 
-{
+export function playSamples(sampleChannels: any, volume = 1, rate = 1, pan = 0, loop = 0) {
     if (!soundEnable) return;
 
     // create audio context
     if (!audioContext)
 
         // @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'webkitAudioContext'.
-        audioContext = new (window.AudioContext||webkitAudioContext);
+        audioContext = new (window.AudioContext || webkitAudioContext);
 
     // create buffer and source
-    const buffer = audioContext.createBuffer(sampleChannels.length, sampleChannels[0].length, zzfxR), 
+    const buffer = audioContext.createBuffer(sampleChannels.length, sampleChannels[0].length, zzfxR),
         source = audioContext.createBufferSource();
 
     // copy samples to buffer and setup source
-    sampleChannels.forEach((c: any,i: any)=> buffer.getChannelData(i).set(c));
+    sampleChannels.forEach((c: any, i: any) => buffer.getChannelData(i).set(c));
     source.buffer = buffer;
     source.playbackRate.value = rate;
     source.loop = loop;
 
     // create pan and gain nodes
     source
-        .connect(new StereoPannerNode(audioContext, {'pan':clamp(pan, 1, -1)}))
-        .connect(new GainNode(audioContext, {'gain':audioVolume*volume}))
+        .connect(new StereoPannerNode(audioContext, { 'pan': clamp(pan, 1, -1) }))
+        .connect(new GainNode(audioContext, { 'gain': audioVolume * volume }))
         .connect(audioContext.destination);
 
     // play and return sound
@@ -232,39 +222,38 @@ function playSamples(sampleChannels: any, volume=1, rate=1, pan=0, loop=0)
  *  @return {Array} - Array of audio samples
  *  @memberof Audio */
 
-const zzfx = (...zzfxSound: any[]) => playSamples([zzfxG(...zzfxSound)]);
+export const zzfx = (...zzfxSound: any[]) => playSamples([zzfxG(...zzfxSound)]);
 
 /** Sample rate used for all ZzFX sounds
  *  @default 44100
  *  @memberof Audio */
 
-const zzfxR = 44100; 
+export const zzfxR = 44100;
 
 /** Generate samples for a ZzFX sound
  *  @memberof Audio */
 
-function zzfxG
-(
-    // parameters
-    volume = 1, randomness = .05, frequency = 220, attack = 0, sustain = 0,
-    release = .1, shape = 0, shapeCurve = 1, slide = 0, deltaSlide = 0,
-    pitchJump = 0, pitchJumpTime = 0, repeatTime = 0, noise = 0, modulation = 0,
-    bitCrush = 0, delay = 0, sustainVolume = 1, decay = 0, tremolo = 0
-)
-{
+export function zzfxG
+    (
+        // parameters
+        volume = 1, randomness = .05, frequency = 220, attack = 0, sustain = 0,
+        release = .1, shape = 0, shapeCurve = 1, slide = 0, deltaSlide = 0,
+        pitchJump = 0, pitchJumpTime = 0, repeatTime = 0, noise = 0, modulation = 0,
+        bitCrush = 0, delay = 0, sustainVolume = 1, decay = 0, tremolo = 0
+    ) {
     // init parameters
-    let PI2 = PI*2, sign = (v: any) => v>0?1:-1,
-        startSlide = slide *= 500 * PI2 / zzfxR / zzfxR, b=[],
-        startFrequency = frequency *= (1 + randomness*rand(-1,1)) * PI2 / zzfxR,
-        t=0, tm=0, i=0, j=1, r=0, c=0, s=0, f, length;
-        
+    let PI2 = PI * 2, sign = (v: any) => v > 0 ? 1 : -1,
+        startSlide = slide *= 500 * PI2 / zzfxR / zzfxR, b = [],
+        startFrequency = frequency *= (1 + randomness * rand(-1, 1)) * PI2 / zzfxR,
+        t = 0, tm = 0, i = 0, j = 1, r = 0, c = 0, s = 0, f, length;
+
     // scale by sample rate
     attack = attack * zzfxR + 9; // minimum attack to prevent pop
     decay *= zzfxR;
     sustain *= zzfxR;
     release *= zzfxR;
     delay *= zzfxR;
-    deltaSlide *= 500 * PI2 / zzfxR**3;
+    deltaSlide *= 500 * PI2 / zzfxR ** 3;
     modulation *= PI2 / zzfxR;
     pitchJump *= PI2 / zzfxR;
     pitchJumpTime *= zzfxR;
@@ -272,40 +261,39 @@ function zzfxG
 
     // generate waveform
     for (length = attack + decay + sustain + release + delay | 0;
-        i < length; b[i++] = s)
-    {
-        if (!(++c%(bitCrush*100|0)))                      // bit crush
+        i < length; b[i++] = s) {
+        if (!(++c % (bitCrush * 100 | 0)))                      // bit crush
         {
-            s = shape? shape>1? shape>2? shape>3?         // wave shape
-                Math.sin((t%PI2)**3) :                    // 4 noise
-                Math.max(Math.min(Math.tan(t),1),-1):     // 3 tan
-                1-(2*t/PI2%2+2)%2:                        // 2 saw
-                1-4*abs(Math.round(t/PI2)-t/PI2):    // 1 triangle
+            s = shape ? shape > 1 ? shape > 2 ? shape > 3 ?         // wave shape
+                Math.sin((t % PI2) ** 3) :                    // 4 noise
+                Math.max(Math.min(Math.tan(t), 1), -1) :     // 3 tan
+                1 - (2 * t / PI2 % 2 + 2) % 2 :                        // 2 saw
+                1 - 4 * abs(Math.round(t / PI2) - t / PI2) :    // 1 triangle
                 Math.sin(t);                              // 0 sin
-                
+
             s = (repeatTime ?
-                    1 - tremolo + tremolo*Math.sin(PI2*i/repeatTime) // tremolo
-                    : 1) *
-                sign(s)*(abs(s)**shapeCurve) *       // curve 0=square, 2=pointy
+                1 - tremolo + tremolo * Math.sin(PI2 * i / repeatTime) // tremolo
+                : 1) *
+                sign(s) * (abs(s) ** shapeCurve) *       // curve 0=square, 2=pointy
                 volume * audioVolume * (                  // envelope
-                i < attack ? i/attack :                   // attack
-                i < attack + decay ?                      // decay
-                1-((i-attack)/decay)*(1-sustainVolume) :  // decay falloff
-                i < attack  + decay + sustain ?           // sustain
-                sustainVolume :                           // sustain volume
-                i < length - delay ?                      // release
-                (length - i - delay)/release *            // release falloff
-                sustainVolume :                           // release volume
-                0);                                       // post release
- 
-            s = delay ? s/2 + (delay > i ? 0 :            // delay
-                (i<length-delay? 1 : (length-i)/delay) *  // release delay 
-                b[i-delay|0]/2) : s;                      // sample delay
+                    i < attack ? i / attack :                   // attack
+                        i < attack + decay ?                      // decay
+                            1 - ((i - attack) / decay) * (1 - sustainVolume) :  // decay falloff
+                            i < attack + decay + sustain ?           // sustain
+                                sustainVolume :                           // sustain volume
+                                i < length - delay ?                      // release
+                                    (length - i - delay) / release *            // release falloff
+                                    sustainVolume :                           // release volume
+                                    0);                                       // post release
+
+            s = delay ? s / 2 + (delay > i ? 0 :            // delay
+                (i < length - delay ? 1 : (length - i) / delay) *  // release delay 
+                b[i - delay | 0] / 2) : s;                      // sample delay
         }
 
         f = (frequency += slide += deltaSlide) *          // frequency
-            Math.cos(modulation*tm++);                    // modulation
-        t += f - f*noise*(1 - (Math.sin(i)+1)*1e9%2);     // noise
+            Math.cos(modulation * tm++);                    // modulation
+        t += f - f * noise * (1 - (Math.sin(i) + 1) * 1e9 % 2);     // noise
 
         if (j && ++j > pitchJumpTime)       // pitch jump
         {
@@ -321,7 +309,7 @@ function zzfxG
             j = j || 1;                     // reset pitch jump time
         }
     }
-    
+
     return b;
 }
 
@@ -336,111 +324,110 @@ function zzfxG
  *  @returns {Array} - Left and right channel sample data
  *  @memberof Audio */
 
-function zzfxM(instruments: any, patterns: any, sequence: any, BPM = 125) 
-{
-  let instrumentParameters;
-  let i;
-  let j;
-  let k;
-  let note;
-  let sample;
-  let patternChannel;
-  let notFirstBeat: any;
-  let stop;
-  let instrument: any;
-  let pitch;
-  let attenuation: any;
-  let outSampleOffset: any;
-  let isSequenceEnd;
-  let sampleOffset = 0;
-  let nextSampleOffset;
-  let sampleBuffer: any = [];
-  let leftChannelBuffer: any = [];
-  let rightChannelBuffer: any = [];
-  let channelIndex = 0;
-  let panning = 0;
-  let hasMore = 1;
-  let sampleCache = {};
-  let beatLength = zzfxR / BPM * 60 >> 2;
+export function zzfxM(instruments: any, patterns: any, sequence: any, BPM = 125) {
+    let instrumentParameters;
+    let i;
+    let j;
+    let k;
+    let note;
+    let sample;
+    let patternChannel;
+    let notFirstBeat: any;
+    let stop;
+    let instrument: any;
+    let pitch;
+    let attenuation: any;
+    let outSampleOffset: any;
+    let isSequenceEnd;
+    let sampleOffset = 0;
+    let nextSampleOffset;
+    let sampleBuffer: any = [];
+    let leftChannelBuffer: any = [];
+    let rightChannelBuffer: any = [];
+    let channelIndex = 0;
+    let panning = 0;
+    let hasMore = 1;
+    let sampleCache = {};
+    let beatLength = zzfxR / BPM * 60 >> 2;
 
-  // for each channel in order until there are no more
-  for (; hasMore; channelIndex++) {
+    // for each channel in order until there are no more
+    for (; hasMore; channelIndex++) {
 
-    // reset current values
-    sampleBuffer = [hasMore = notFirstBeat = pitch = outSampleOffset = 0];
+        // reset current values
+        sampleBuffer = [hasMore = notFirstBeat = pitch = outSampleOffset = 0];
 
-    // for each pattern in sequence
-    sequence.forEach((patternIndex: any, sequenceIndex: any) => {
-      // get pattern for current channel, use empty 1 note pattern if none found
-      patternChannel = patterns[patternIndex][channelIndex] || [0, 0, 0];
+        // for each pattern in sequence
+        sequence.forEach((patternIndex: any, sequenceIndex: any) => {
+            // get pattern for current channel, use empty 1 note pattern if none found
+            patternChannel = patterns[patternIndex][channelIndex] || [0, 0, 0];
 
-      // check if there are more channels
+            // check if there are more channels
 
-      // @ts-expect-error ts-migrate(2363) FIXME: The right-hand side of an arithmetic operation mus... Remove this comment to see the full error message
-      hasMore |= !!patterns[patternIndex][channelIndex];
+            // @ts-expect-error ts-migrate(2363) FIXME: The right-hand side of an arithmetic operation mus... Remove this comment to see the full error message
+            hasMore |= !!patterns[patternIndex][channelIndex];
 
-      // get next offset, use the length of first channel
+            // get next offset, use the length of first channel
 
-      // @ts-expect-error ts-migrate(2363) FIXME: The right-hand side of an arithmetic operation mus... Remove this comment to see the full error message
-      nextSampleOffset = outSampleOffset + (patterns[patternIndex][0].length - 2 - !notFirstBeat) * beatLength;
-      // for each beat in pattern, plus one extra if end of sequence
-      isSequenceEnd = sequenceIndex == sequence.length - 1;
-      for (i = 2, k = outSampleOffset; i < patternChannel.length + isSequenceEnd; notFirstBeat = ++i) {
+            // @ts-expect-error ts-migrate(2363) FIXME: The right-hand side of an arithmetic operation mus... Remove this comment to see the full error message
+            nextSampleOffset = outSampleOffset + (patterns[patternIndex][0].length - 2 - !notFirstBeat) * beatLength;
+            // for each beat in pattern, plus one extra if end of sequence
+            isSequenceEnd = sequenceIndex == sequence.length - 1;
+            for (i = 2, k = outSampleOffset; i < patternChannel.length + isSequenceEnd; notFirstBeat = ++i) {
 
-        // <channel-note>
-        note = patternChannel[i];
+                // <channel-note>
+                note = patternChannel[i];
 
-        // stop if end, different instrument or new note
-        stop = i == patternChannel.length + isSequenceEnd - 1 && isSequenceEnd ||
+                // stop if end, different instrument or new note
+                stop = i == patternChannel.length + isSequenceEnd - 1 && isSequenceEnd ||
 
-            // @ts-expect-error ts-migrate(2362) FIXME: The left-hand side of an arithmetic operation must... Remove this comment to see the full error message
-            instrument != (patternChannel[0] || 0) | note | 0;
+                    // @ts-expect-error ts-migrate(2362) FIXME: The left-hand side of an arithmetic operation must... Remove this comment to see the full error message
+                    instrument != (patternChannel[0] || 0) | note | 0;
 
-        // fill buffer with samples for previous beat, most cpu intensive part
-        for (j = 0; j < beatLength && notFirstBeat;
+                // fill buffer with samples for previous beat, most cpu intensive part
+                for (j = 0; j < beatLength && notFirstBeat;
 
-            // fade off attenuation at end of beat if stopping note, prevents clicking
+                    // fade off attenuation at end of beat if stopping note, prevents clicking
 
-            // @ts-expect-error ts-migrate(2362) FIXME: The left-hand side of an arithmetic operation must... Remove this comment to see the full error message
-            j++ > beatLength - 99 && stop ? attenuation += (attenuation < 1) / 99 : 0
-        ) {
-          // copy sample to stereo buffers with panning
-          sample = (1 - attenuation) * sampleBuffer[sampleOffset++] / 2 || 0;
-          leftChannelBuffer[k] = (leftChannelBuffer[k] || 0) - sample * panning + sample;
-          rightChannelBuffer[k] = (rightChannelBuffer[k++] || 0) + sample * panning + sample;
-        }
+                    // @ts-expect-error ts-migrate(2362) FIXME: The left-hand side of an arithmetic operation must... Remove this comment to see the full error message
+                    j++ > beatLength - 99 && stop ? attenuation += (attenuation < 1) / 99 : 0
+                ) {
+                    // copy sample to stereo buffers with panning
+                    sample = (1 - attenuation) * sampleBuffer[sampleOffset++] / 2 || 0;
+                    leftChannelBuffer[k] = (leftChannelBuffer[k] || 0) - sample * panning + sample;
+                    rightChannelBuffer[k] = (rightChannelBuffer[k++] || 0) + sample * panning + sample;
+                }
 
-        // set up for next note
-        if (note) {
-          // set attenuation
-          attenuation = note % 1;
-          panning = patternChannel[1] || 0;
-          if (note |= 0) {
-            // get cached sample
-            sampleBuffer = sampleCache[
+                // set up for next note
+                if (note) {
+                    // set attenuation
+                    attenuation = note % 1;
+                    panning = patternChannel[1] || 0;
+                    if (note |= 0) {
+                        // get cached sample
+                        sampleBuffer = sampleCache[
 
-              // @ts-expect-error ts-migrate(2538) FIXME: Type 'any[]' cannot be used as an index type.
-              [
-                instrument = patternChannel[sampleOffset = 0] || 0,
-                note
-              ]
-            // @ts-expect-error ts-migrate(2538) FIXME: Type 'any[]' cannot be used as an index type.
-            ] = sampleCache[[instrument, note]] || (
-                // add sample to cache
-                instrumentParameters = [...instruments[instrument]],
-                instrumentParameters[2] *= 2 ** ((note - 12) / 12),
+                            // @ts-expect-error ts-migrate(2538) FIXME: Type 'any[]' cannot be used as an index type.
+                            [
+                                instrument = patternChannel[sampleOffset = 0] || 0,
+                                note
+                            ]
+                            // @ts-expect-error ts-migrate(2538) FIXME: Type 'any[]' cannot be used as an index type.
+                        ] = sampleCache[[instrument, note]] || (
+                            // add sample to cache
+                            instrumentParameters = [...instruments[instrument]],
+                            instrumentParameters[2] *= 2 ** ((note - 12) / 12),
 
-                // allow negative values to stop notes
-                note > 0 ? zzfxG(...instrumentParameters) : []
-            );
-          }
-        }
-      }
+                            // allow negative values to stop notes
+                            note > 0 ? zzfxG(...instrumentParameters) : []
+                        );
+                    }
+                }
+            }
 
-      // update the sample offset
-      outSampleOffset = nextSampleOffset;
-    });
-  }
+            // update the sample offset
+            outSampleOffset = nextSampleOffset;
+        });
+    }
 
-  return [leftChannelBuffer, rightChannelBuffer];
+    return [leftChannelBuffer, rightChannelBuffer];
 }
