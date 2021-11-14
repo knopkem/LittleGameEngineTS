@@ -3,15 +3,22 @@ const HtmlWebPackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     entry: {
-        app: ['./src/index.ts'],
+        engine: ['./src/index.ts'],
     },
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'js/[name].bundle.js'
+        filename: 'index.umd.min.js',
+        libraryTarget: 'umd',
+        library: 'littleGameEngineTS',
+        umdNamedDefine: true,
+        globalObject: 'this'
     },
     devtool: "source-map",
     resolve: {
         extensions: [".ts"]
+    },
+    externals: {
+      cryptojs: 'crypto-js',
     },
     module: {
       rules: [

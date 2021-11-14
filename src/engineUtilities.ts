@@ -181,15 +181,6 @@ export const randSeeded = (a = 1, b = 0) => {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-/** Create a 2d vector, can take another Vector2 to copy, 2 scalars, or 1 scalar
- *  @param {Number} [x=0]
- *  @param {Number} [y=0]
- *  @return {Vector2}
- *  @memberof Utilities */
-
-// @ts-expect-error ts-migrate(2339) FIXME: Property 'x' does not exist on type 'number'.
-export const vec2 = (x = 0, y?: any) => x.x == undefined ? new Vector2(x, y == undefined ? x : y) : new Vector2(x.x, x.y);
-
 /** 2D Vector object with vector math library */
 export class Vector2 {
     x: any;
@@ -320,6 +311,17 @@ export class Vector2 {
      * @return {Boolean} */
     arrayCheck(arraySize: any) { return this.x >= 0 && this.y >= 0 && this.x < arraySize.x && this.y < arraySize.y; }
 }
+
+/** Create a 2d vector, can take another Vector2 to copy, 2 scalars, or 1 scalar
+ *  @param {Number} [x=0]
+ *  @param {Number} [y=0]
+ *  @return {Vector2}
+ *  @memberof Utilities */
+
+ export function vec2 (x?: any, y?: any) {
+  return x.x == undefined ? new Vector2(x, y == undefined ? x : y) : new Vector2(x.x, x.y);
+} 
+
 
 ///////////////////////////////////////////////////////////////////////////////
 

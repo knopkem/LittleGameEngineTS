@@ -6,7 +6,7 @@
 
 'use strict';
 
-pixelated = 0; // do not use pixelated rendering
+// pixelated = 0; // do not use pixelated rendering
 
 const fallTime = .2;
 const cameraOffset = vec2(0,-.5);
