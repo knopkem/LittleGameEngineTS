@@ -1,9 +1,9 @@
 import { engineName, engineObjects, time,  } from "./engine";
-import { mainContext, overlayCanvas, mainCanvas, drawLine, overlayContext, drawText, worldToScreen } from "./engineDraw";
+import { mainContext, overlayCanvas, mainCanvas, drawLine, overlayContext, drawText, worldToScreen, setMainContext } from "./engineDraw";
 import { gamepadsEnable, cameraPos, cameraScale } from "./engineSettings";
 import { clamp, Color, formatTime, max, min, PI, Timer, vec2 } from "./engineUtilities";
 import { glCopyToContext } from "./engineWebGL";
-import { stickData } from './engineInput';
+import { keyWasPressed, mousePos, stickData } from './engineInput';
 
 /** 
  *  LittleJS Medal System
@@ -299,7 +299,7 @@ export const debugRender = ()=>
         if (bestObject)
         {
             const saveContext = mainContext;
-            mainContext = overlayContext
+            setMainContext(overlayContext);
 
             // @ts-expect-error ts-migrate(2554) FIXME: Expected 3 arguments, but got 2.
             const raycastHitPos = tileCollisionRaycast(bestObject.pos, mousePos);
@@ -329,7 +329,7 @@ export const debugRender = ()=>
 
             // @ts-expect-error ts-migrate(2769) FIXME: No overload matches this call.
             drawText('collision = ' + getTileCollisionData(mousePos), pos = mousePos.subtract(height), ...args);
-            mainContext = saveContext;
+            setMainContext(saveContext);
         }
 
 
@@ -629,11 +629,3 @@ export const debugParticleSettings =
     ['renderOrder'],
 ];
 
-function keyWasPressed(arg0: number) {
-    throw new Error("Function not implemented.");
-}
-
-
-function mousePos(mousePos: any, pos: any, arg2: number, arg3: Color) {
-    throw new Error("Function not implemented.");
-}

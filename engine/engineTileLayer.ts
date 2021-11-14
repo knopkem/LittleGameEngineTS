@@ -1,8 +1,8 @@
 import { debugLine, ASSERT } from './engineDebug';
-import { mainContext, worldToScreen, mainCanvasSize, mainCanvas, drawTile, tileImage } from './engineDraw';
+import { mainContext, worldToScreen, mainCanvasSize, mainCanvas, drawTile, tileImage, setMainCanvas, setMainCanvasSize, setMainContext } from './engineDraw';
 import { EngineObject } from './engineObject';
 import { debugRaycast } from './engineRelease';
-import { defaultTileSize, cameraScale, cameraPos, pixelated } from './engineSettings';
+import { defaultTileSize, cameraScale, cameraPos, pixelated, setCameraScale, setCameraPos } from './engineSettings';
 import { abs, Color, max, min, PI, sign, vec2, Vector2 } from './engineUtilities';
 import { glPreRender, glCopyToContext } from './engineWebGL';
 
@@ -263,12 +263,12 @@ export class TileLayer extends EngineObject
         this.savedRenderSettings = [mainCanvasSize, mainCanvas, mainContext, cameraScale, cameraPos];
 
         // set camera transform for renering
-        cameraScale = this.tileSize.x;
-        cameraPos = this.size.scale(.5);
-        mainCanvas = this.canvas;
-        mainContext = this.context;
+        setCameraScale(this.tileSize.x);
+        setCameraPos(this.size.scale(.5));
+        setMainCanvas(this.canvas);
+        setMainContext(this.context);
         mainContext.imageSmoothingEnabled = !pixelated; // disable smoothing for pixel art
-        mainCanvasSize = vec2(width, height);
+        setMainCanvasSize(vec2(width, height));
         glPreRender(width, height);
     }
 
@@ -281,7 +281,11 @@ export class TileLayer extends EngineObject
         //debugSaveCanvas(this.canvas);
 
         // set stuff back to normal
-        [mainCanvasSize, mainCanvas, mainContext, cameraScale, cameraPos] = this.savedRenderSettings;
+        setCameraScale(this.savedRenderSettings.cameraScale);
+        setCameraPos(this.savedRenderSettings.setCameraPos);
+        setMainCanvas(this.savedRenderSettings.setMainCanvas);
+        setMainContext(this.savedRenderSettings.setMainContext);
+        setMainCanvasSize(this.savedRenderSettings.setMainCanvasSize);
     }
 
     /** Draw the tile at a given position

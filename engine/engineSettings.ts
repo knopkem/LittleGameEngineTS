@@ -1,4 +1,4 @@
-import { max, vec2 } from "./engineUtilities";
+import { max, vec2, Vector2 } from "./engineUtilities";
 
 /**
  *  LittleJS Engine Settings
@@ -112,12 +112,20 @@ export const gravity = 0;
  *  @default
  *  @memberof Settings */
 
-export const cameraPos = vec2();
+export let cameraPos = vec2();
+
+export function setCameraPos( pos: Vector2): Vector2 {
+  return cameraPos = pos;
+}
 
 /** Scale of camera in world space
  *  @default
  *  @memberof Settings */
-export const cameraScale = max(defaultTileSize.x, defaultTileSize.y);
+export let cameraScale = max(defaultTileSize.x, defaultTileSize.y);
+
+export function setCameraScale( scale: any): any {
+  return cameraScale = scale;
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // WebGL settings

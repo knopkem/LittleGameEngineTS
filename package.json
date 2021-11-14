@@ -34,7 +34,6 @@
     "google-closure-compiler": "^20211006.0.0",
     "roadroller": "^2.1.0",
     "ts-migrate": "^0.1.26",
-    "tsc": "^2.0.3",
     "typescript": "^4.4.4",
     "uglify-js": "^3.14.2"
   }

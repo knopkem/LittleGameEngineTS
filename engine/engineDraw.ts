@@ -1,6 +1,6 @@
 import { Color, vec2, Vector2 } from "./engineUtilities";
 import { cameraPos, cameraScale, defaultFont, defaultTileSize, glEnable, tileBleedShrinkFix } from "./engineSettings";
-import { drawCount } from "./engine";
+import { drawCount, setDrawCount } from "./engine";
 import { showWatermark } from "./engineDebug";
 import { glDraw, glSetBlendMode } from "./engineWebGL";
 
@@ -25,8 +25,7 @@ export const tileImage = new Image();
 export let mainCanvas: any;
 
 export function setMainCanvas(canvas: any): any {
-   mainCanvas = canvas;
-   return mainCanvas;
+   return mainCanvas = canvas;
 }
 
 /** 2d context for mainCanvas
@@ -35,8 +34,7 @@ export function setMainCanvas(canvas: any): any {
 export let mainContext: any;
 
 export function setMainContext(context: any): any {
-  mainContext = context;
-  return mainContext;
+  return mainContext = context;
 }
 
 /** A canvas that appears on top of everything the same size as mainCanvas
@@ -45,8 +43,7 @@ export function setMainContext(context: any): any {
 export let overlayCanvas: any;
 
 export function setOverlayCanvas(canvas: any): any {
-  overlayCanvas = canvas;
-  return overlayCanvas;
+  return overlayCanvas = canvas;
 }
 
 /** 2d context for overlayCanvas
@@ -55,8 +52,7 @@ export function setOverlayCanvas(canvas: any): any {
 export let overlayContext: any;
 
 export function setOverlayContext(context: any): any {
-  overlayContext = context;
-  return overlayContext;
+  return overlayContext = context;
 }
 
 /** The size of the main canvas (and other secondary canvases: overlayCanvas and glCanvas) 
@@ -66,8 +62,7 @@ export function setOverlayContext(context: any): any {
 export let mainCanvasSize = vec2();
 
 export function setMainCanvasSize(size: Vector2) : Vector2 {
-  mainCanvasSize = size;
-  return mainCanvasSize;
+  return mainCanvasSize = size;
 }
 
 /** Convert from screen to world space coordinates
@@ -97,7 +92,7 @@ export const worldToScreen = (worldPos: any) => worldPos.subtract(cameraPos).mul
 
 export function drawTile(pos: any, size = vec2(1), tileIndex = -1, tileSize = defaultTileSize, color = new Color, angle = 0, mirror: any,
     additiveColor = new Color(0, 0, 0, 0)) {
-    showWatermark && ++drawCount;
+    showWatermark && setDrawCount(drawCount + 1);
     if (glEnable) {
         if (tileIndex < 0) {
             // if negative tile index, force untextured

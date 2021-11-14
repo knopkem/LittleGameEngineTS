@@ -61,6 +61,10 @@ export let paused = 0;
 export let frameTimeLastMS = 0, frameTimeBufferMS = 0, debugFPS = 0,
     shrinkTilesX: number, shrinkTilesY: number, drawCount: any, tileImageSize: any, tileImageSizeInverse: false;
 
+export function setDrawCount(count: number): number {
+  return drawCount = count;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /** Start up LittleJS engine with your callback functions
