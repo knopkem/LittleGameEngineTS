@@ -1,40 +1,38 @@
 {
-  "name": "littlejsengine",
-  "version": "1.1.1",
-  "description": "LittleJS - Tiny and Fast HTML5 Game Engine",
-  "main": "engine/engine.all.js",
+  "name": "@knopkem/littleGameEngineTS",
+  "version": "1.0.0",
+  "description": "LittleGameEngineTS - Tiny and Fast HTML5 Game Engine typescript port of LittleJS",
+  "main": "src/index.ts",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/KilledByAPixel/LittleJS.git"
+    "url": "git+https://github.com/knopkem/LittleGameEngineTS.git"
   },
   "scripts": {
-    "build": "tsc -p engine",
-    "migrate": "npx ts-migrate"
+    "build": "tsc -p src",
+    "bundle": "webpack --mode production"
   },
   "keywords": [
     "HTML5",
     "JavaScript",
+    "TypeScript",
     "game",
     "library",
     "JS13K",
     "webgl",
     "engine"
   ],
-  "author": "Frank Force",
+  "author": "Michael Knopke",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/KilledByAPixel/LittleJS/issues"
+    "url": "https://github.com/knopkem/LittleGameEngineTS/issues"
   },
-  "homepage": "https://github.com/KilledByAPixel/LittleJS",
-  "dependencies": {
-    "clean-jsdoc-theme": "^3.2.10"
-  },
+  "homepage": "https://github.com/knopkem/LittleGameEngineTS",
   "devDependencies": {
-    "ect-bin": "^1.4.1",
-    "google-closure-compiler": "^20211006.0.0",
-    "roadroller": "^2.1.0",
-    "ts-migrate": "^0.1.26",
+    "html-webpack-plugin": "^5.5.0",
+    "ts-loader": "^9.2.6",
     "typescript": "^4.4.4",
-    "uglify-js": "^3.14.2"
+    "webpack": "^5.64.0",
+    "webpack-cli": "^4.9.1",
+    "webpack-dev-server": "^4.5.0"
   }
 }

@@ -92,7 +92,6 @@ export const formatTime = (t: any) => (t / 60 | 0) + ':' + (t % 60 < 10 ? '0' : 
  *  @return {Number}
  *  @memberof Utilities */
 
-// @ts-expect-error ts-migrate(2550) FIXME: Property 'log2' does not exist on type 'Math'. Do ... Remove this comment to see the full error message
 export const nearestPowerOfTwo = (v: any) => 2 ** Math.ceil(Math.log2(v));
 
 /** Applies smoothstep function to the percentage value
