@@ -1,7 +1,7 @@
 import { fixedWidth, fixedHeight, tileBleedShrinkFix, pixelated, fixedFitToWindow, maxHeight, maxWidth } from "./engineSettings";
 import { ASSERT, debugInit, debugUpdate, debugRender, debug, showWatermark } from "./engineDebug";
 import { min, lerp, vec2, isOverlapping } from "./engineUtilities";
-import { tileImage, mainCanvas, mainContext, overlayCanvas, overlayContext, mainCanvasSize } from "./engineDraw";
+import { tileImage, mainCanvas, setMainCanvas,  mainContext, setMainContext, overlayCanvas, setOverlayCanvas, overlayContext, setOverlayContext, setMainCanvasSize } from "./engineDraw";
 import { medalsRender } from "./engineMedals";
 import { glInit, glPreRender } from "./engineWebGL";
 import { glCanvas } from "./engineWebGL";
@@ -85,22 +85,22 @@ export let frameTimeLastMS = 0, frameTimeBufferMS = 0, debugFPS = 0,
         shrinkTilesY = tileBleedShrinkFix / tileImageSize.y;
 
         // setup html
-        document.body.appendChild(mainCanvas = document.createElement('canvas'));
+        document.body.appendChild(setMainCanvas(document.createElement('canvas')));
 
         // @ts-expect-error ts-migrate(2540) FIXME: Cannot assign to 'style' because it is a read-only... Remove this comment to see the full error message
         document.body.style = 'margin:0;overflow:hidden;background:#000';
         mainCanvas.style = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)' +
             (pixelated ? ';image-rendering:crisp-edges;image-rendering:pixelated' : ''); // pixelated rendering
-        mainContext = mainCanvas.getContext('2d');
+        setMainContext(mainCanvas.getContext('2d'));
 
         // init stuff and start engine
         debugInit();
         glInit();
 
         // create overlay canvas for hud to appear above gl canvas
-        document.body.appendChild(overlayCanvas = document.createElement('canvas'));
+        document.body.appendChild(setOverlayCanvas(document.createElement('canvas')));
         overlayCanvas.style = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)';
-        overlayContext = overlayCanvas.getContext('2d');
+        setOverlayContext(overlayCanvas.getContext('2d'));
 
         gameInit();
         engineUpdate();
@@ -179,7 +179,7 @@ export let frameTimeLastMS = 0, frameTimeBufferMS = 0, debugFPS = 0,
         }
 
         // save canvas size and clear overlay canvas
-        mainCanvasSize = vec2(overlayCanvas.width = mainCanvas.width, overlayCanvas.height = mainCanvas.height);
+        setMainCanvasSize(vec2(overlayCanvas.width = mainCanvas.width, overlayCanvas.height = mainCanvas.height));
         mainContext.imageSmoothingEnabled = !pixelated; // disable smoothing for pixel art
 
         // render sort then render while removing destroyed objects

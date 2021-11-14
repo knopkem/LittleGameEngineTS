@@ -1,8 +1,9 @@
-import { Color, vec2 } from "./engineUtilities";
+import { Color, vec2, Vector2 } from "./engineUtilities";
 import { cameraPos, cameraScale, defaultFont, defaultTileSize, glEnable, tileBleedShrinkFix } from "./engineSettings";
 import { drawCount } from "./engine";
 import { showWatermark } from "./engineDebug";
 import { glDraw, glSetBlendMode } from "./engineWebGL";
+
 /** 
  *  LittleJS Drawing System
  *  <br> - Hybrid with both Canvas2D and WebGL available
@@ -23,26 +24,51 @@ export const tileImage = new Image();
  *  @memberof Draw */
 export let mainCanvas: any;
 
+export function setMainCanvas(canvas: any): any {
+   mainCanvas = canvas;
+   return mainCanvas;
+}
+
 /** 2d context for mainCanvas
  *  @type {CanvasRenderingContext2D}
  *  @memberof Draw */
 export let mainContext: any;
+
+export function setMainContext(context: any): any {
+  mainContext = context;
+  return mainContext;
+}
 
 /** A canvas that appears on top of everything the same size as mainCanvas
  *  @type {HTMLCanvasElement}
  *  @memberof Draw */
 export let overlayCanvas: any;
 
+export function setOverlayCanvas(canvas: any): any {
+  overlayCanvas = canvas;
+  return overlayCanvas;
+}
+
 /** 2d context for overlayCanvas
  *  @type {CanvasRenderingContext2D}
  *  @memberof Draw */
 export let overlayContext: any;
+
+export function setOverlayContext(context: any): any {
+  overlayContext = context;
+  return overlayContext;
+}
 
 /** The size of the main canvas (and other secondary canvases: overlayCanvas and glCanvas) 
  *  @type {Vector2}
  *  @memberof Draw */
 
 export let mainCanvasSize = vec2();
+
+export function setMainCanvasSize(size: Vector2) : Vector2 {
+  mainCanvasSize = size;
+  return mainCanvasSize;
+}
 
 /** Convert from screen to world space coordinates
  *  @param {Vector2} screenPos
