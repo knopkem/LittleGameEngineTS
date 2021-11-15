@@ -322,7 +322,7 @@ export class EngineObject
      *  @param {EngineObject} object - the object to test against
      *  @return {Boolean} true if the collision should be resolved
      */
-    collideWithObject(o: any)              { return 1; }
+    collideWithObject(o: any)              { return true; }
 
     /** How long since the object was created
      *  @return {Number} */

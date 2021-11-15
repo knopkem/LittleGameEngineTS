@@ -63,6 +63,10 @@ export const keyIsDown = (key: any, device=0)=> inputData[device] && inputData[d
 
  export let mousePos = vec2();
 
+ export function getMousePos() {
+   return mousePos;
+ }
+
 /** Mouse pos in screen space
  *  @type {Vector2}
  *  @memberof Input */

@@ -203,7 +203,6 @@ export const debugUpdate = ()=>
 export const debugRender = ()=>
 {
 
-    // @ts-expect-error ts-migrate(2554) FIXME: Expected 2 arguments, but got 1.
     glCopyToContext(mainContext);
 
     if (debugTakeScreenshot)
@@ -332,8 +331,6 @@ export const debugRender = ()=>
             setMainContext(saveContext);
         }
 
-
-        // @ts-expect-error ts-migrate(2554) FIXME: Expected 2 arguments, but got 1.
         glCopyToContext(mainContext);
     }
 

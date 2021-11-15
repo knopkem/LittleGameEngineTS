@@ -100,7 +100,7 @@ export function glInit()
 /** Set the WebGl blend mode, normally you should call setBlendMode instead
  *  @param {Boolean} [additive=0]
  *  @memberof WebGL */
- export function glSetBlendMode(additive: any)
+ export function glSetBlendMode(additive = 0)
 {
     if (!glEnable) return;
         
@@ -221,7 +221,6 @@ export function glPreRender(width: any, height: any)
     glContext.bindTexture(gl_TEXTURE_2D, glActiveTexture = glTileTexture);
     glContext.useProgram(glShader);
 
-    // @ts-expect-error ts-migrate(2554) FIXME: Expected 1 arguments, but got 0.
     glSetBlendMode();
 
     // build the transform matrix
@@ -254,7 +253,7 @@ export function glPreRender(width: any, height: any)
  *  @param {CanvasRenderingContext2D} context
  *  @param {Boolean} [forceDraw=0]
  *  @memberof WebGL */
- export function glCopyToContext(context: any, forceDraw: any)
+ export function glCopyToContext(context: any, forceDraw?: any)
 {
     if (!glEnable || !glDirty)  return;
     

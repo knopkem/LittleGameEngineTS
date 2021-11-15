@@ -5,7 +5,7 @@ import { tileImage, mainCanvas, setMainCanvas,  mainContext, setMainContext, ove
 import { medalsRender } from "./index";
 import { glInit, glPreRender } from "./index";
 import { glCanvas } from "./index";
-import { keyIsDown, inputUpdatePost, inputUpdate } from "./engineInput";
+import { keyIsDown, inputUpdatePost, inputUpdate, glCopyToContext } from "./index";
 
 /*
     LittleJS - The Tiny JavaScript Game Engine That Can!
@@ -189,15 +189,13 @@ export function setDrawCount(count: number): number {
         glPreRender(mainCanvas.width, mainCanvas.height);
         gameRender();
 
-        // @ts-expect-error ts-migrate(7006) FIXME: Parameter 'a' implicitly has an 'any' type.
-        engineObjects.sort((a, b) => a.renderOrder - b.renderOrder);
+        engineObjects.sort((a: any, b: any) => a.renderOrder - b.renderOrder);
         for (const o of engineObjects)
             o.destroyed || o.render();
         gameRenderPost();
         medalsRender();
         debugRender();
 
-        // @ts-expect-error ts-migrate(2554) FIXME: Expected 2 arguments, but got 1.
         glCopyToContext(mainContext);
 
         if (showWatermark) {
@@ -217,8 +215,7 @@ export function setDrawCount(count: number): number {
 
     // set tile image source to load the image and start the engine
 
-    // @ts-expect-error ts-migrate(2554) FIXME: Expected 1 arguments, but got 0.
-    tileImageSource ? tileImage.src = tileImageSource : tileImage.onload();
+    tileImageSource ? tileImage.src = tileImageSource : tileImage.onload;
 }
 
 
@@ -240,11 +237,9 @@ export function engineObjectsUpdate() {
 
     // remove destroyed objects
 
-    // @ts-expect-error ts-migrate(7006) FIXME: Parameter 'o' implicitly has an 'any' type.
-    engineObjects = engineObjects.filter(o => !o.destroyed);
+    engineObjects = engineObjects.filter((o: any) => !o.destroyed);
 
-    // @ts-expect-error ts-migrate(7006) FIXME: Parameter 'o' implicitly has an 'any' type.
-    engineCollideObjects = engineCollideObjects.filter(o => !o.destroyed);
+    engineCollideObjects = engineCollideObjects.filter((o: any) => !o.destroyed);
 
     // increment frame and update time
     time = ++frame / FPS;
@@ -256,8 +251,7 @@ export function engineObjectsDestroy() {
     for (const o of engineObjects)
         o.persistent || o.parent || o.destroy();
 
-    // @ts-expect-error ts-migrate(7006) FIXME: Parameter 'o' implicitly has an 'any' type.
-    engineObjects = engineObjects.filter(o => !o.destroyed);
+    engineObjects = engineObjects.filter((o: any) => !o.destroyed);
 }
 
 /** Triggers a callback for each object within a given area

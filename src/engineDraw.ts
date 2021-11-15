@@ -2,7 +2,7 @@ import { Color, vec2, Vector2 } from "./index";
 import { cameraPos, cameraScale, defaultFont, defaultTileSize, glEnable, tileBleedShrinkFix } from "./index";
 import { drawCount, setDrawCount } from "./index";
 import { showWatermark } from "./index";
-import { glDraw, glSetBlendMode } from "./index";
+import { glDraw, glSetBlendMode, tileImageSizeInverse } from "./index";
 
 /** 
  *  LittleJS Drawing System
@@ -107,19 +107,15 @@ export function drawTile(pos: any, size = vec2(1), tileIndex = -1, tileSize = de
             // calculate uvs and render
             const cols = tileImage.width / tileSize.x | 0;
 
-            // @ts-expect-error ts-migrate(7005) FIXME: Variable 'tileImageSizeInverse' implicitly has an ... Remove this comment to see the full error message
             const uvSizeX = tileSize.x * tileImageSizeInverse.x;
 
-            // @ts-expect-error ts-migrate(7005) FIXME: Variable 'tileImageSizeInverse' implicitly has an ... Remove this comment to see the full error message
             const uvSizeY = tileSize.y * tileImageSizeInverse.y;
             const uvX = (tileIndex % cols) * uvSizeX, uvY = (tileIndex / cols | 0) * uvSizeY;
 
             // shrink uvs to prevent bleeding
 
-            // @ts-expect-error ts-migrate(7005) FIXME: Variable 'tileImageSizeInverse' implicitly has an ... Remove this comment to see the full error message
             const shrinkTilesX = tileBleedShrinkFix * tileImageSizeInverse.x;
 
-            // @ts-expect-error ts-migrate(7005) FIXME: Variable 'tileImageSizeInverse' implicitly has an ... Remove this comment to see the full error message
             const shrinkTilesY = tileBleedShrinkFix * tileImageSizeInverse.y;
 
             glDraw(pos.x, pos.y, mirror ? -size.x : size.x, size.y, angle,

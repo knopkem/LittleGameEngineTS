@@ -58,20 +58,28 @@ function gameInit()
 ///////////////////////////////////////////////////////////////////////////////
 function gameUpdate()
 {
-    if (!musicSource && mouseWasPressed(0))
+    if (!musicSource && mouseWasPressed(0)) {
+        console.log('should play music');
         musicSource = music.play();
+    }
 
     // mouse click = change color
-    if (mouseWasPressed(0) || mouseIsDown(2))
+    if (mouseWasPressed(0) || mouseIsDown(2)) {
+        console.log('should change color');
         spriteColor = randColor(), spriteAdditiveColor = randColor(new Color(.5,.5,.5, 0), new Color(0,0,0,0));
+    }
 
     // right click = drop test object
-    if (mouseIsDown(2))
-        new TestObject(mousePos);
+    if (mouseIsDown(2)) {
+        const pos = getMousePos();
+        console.log('should create testObject', mousePos, pos);
+        new TestObject(pos);
+    }
 
     // mouse hold = add objects
-    if (mouseIsDown(0))
-        for (let i=100;i--;)
+    if (mouseWasPressed(0) /*mouseIsDown(0)*/ ) {
+        console.log('should create new sprite');
+        for (let i=1;i--;)
             sprites.push({
                 pos:mousePos.add(randInCircle(2)),
                 angle:rand(), 
@@ -79,6 +87,7 @@ function gameUpdate()
                 color:spriteColor = spriteColor.mutate(), 
                 additiveColor:spriteAdditiveColor.mutate()
             });
+    }
     
     // mouse wheel = zoom
     cameraScale = clamp(cameraScale*(1-mouseWheel/10), 1e3, 1);

@@ -117,13 +117,12 @@ export class Music {
  *  @return {HTMLAudioElement} - The audio element for this sound
  *  @memberof Audio */
 
-export function playAudioFile(url: any, volume = 1, loop = 1) {
+export function playAudioFile(url: any, volume = 1, loop = true) {
     if (!soundEnable) return;
 
     const audio = new Audio(url);
     audio.volume = audioVolume * volume;
 
-    // @ts-expect-error ts-migrate(2322) FIXME: Type 'number' is not assignable to type 'boolean'.
     audio.loop = loop;
     audio.play();
     return audio;
