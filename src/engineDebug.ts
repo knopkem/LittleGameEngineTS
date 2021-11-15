@@ -140,13 +140,13 @@ export const debugPoint = (pos: any, color: any, time: any, angle: any)=> debugR
 
 /** Clear all debug primitives in the list
  *  @memberof Debug */
- export const debugClear = ()=> debugPrimitives = [];
+ export const debugClear = () : any[] => debugPrimitives = [];
 
 /** Save a canvas to disk 
  *  @param {HTMLCanvasElement} canvas
  *  @param {String}            [filename]
  *  @memberof Debug */
- export const debugSaveCanvas = (canvas: any, filename = engineName + '.png') =>
+ export const debugSaveCanvas = (canvas: any, _filename = engineName + '.png') =>
 {
     downloadLink.download = 'screenshot.png';
     downloadLink.href = canvas.toDataURL('image/png').replace('image/png','image/octet-stream');
@@ -339,8 +339,7 @@ export const debugRender = ()=>
         overlayContext.lineWidth = 1;
         const pointSize = debugPointSize * cameraScale;
 
-        // @ts-expect-error ts-migrate(7006) FIXME: Parameter 'p' implicitly has an 'any' type.
-        debugPrimitives.forEach(p=>
+        debugPrimitives.forEach( (p: any) =>
         {
             // create canvas transform from world space to screen space
             const pos = worldToScreen(p.pos);
@@ -428,8 +427,7 @@ export const debugRender = ()=>
     }
 
 
-    // @ts-expect-error ts-migrate(7006) FIXME: Parameter 'r' implicitly has an 'any' type.
-    debugPrimitives = debugPrimitives.filter(r=>r.time.get()<0);
+    debugPrimitives = debugPrimitives.filter( (r: any) =>r.time.get()<0);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -504,7 +502,7 @@ export const debugToggleParticleEditor = ()=>
             else
                 input.value = debugParticleSystem[name] || '0';
 
-            input.oninput = (e)=>
+            input.oninput = (_e)=>
             {
                 const inputFloat = parseFloat(input.value) || 0;
                 if (type)
@@ -556,7 +554,7 @@ export const debugToggleParticleEditor = ()=>
         div.appendChild(button);
         button.innerHTML = 'Copy To Clipboard';
         
-        button.onclick = (e)=> navigator.clipboard.writeText(particleSystemCode.value); 
+        button.onclick = (_e)=> navigator.clipboard.writeText(particleSystemCode.value); 
 
         const updateCode = ()=>
         {

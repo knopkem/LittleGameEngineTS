@@ -310,19 +310,19 @@ export class EngineObject
      *  @param {Number}  tileData - the value of the tile at the position
      *  @param {Vector2} pos - tile where the collision occured
      *  @return {Boolean} true if the collision should be resolved */
-    collideWithTile(tileData: any, pos: any)        { return tileData > 0; }
+    collideWithTile(tileData: any, _pos: any)        { return tileData > 0; }
 
     /** Called to check if a tile raycast hit
      *  @param {Number}  tileData - the value of the tile at the position
      *  @param {Vector2} pos - tile where the raycast is
      *  @return {Boolean} true if the raycast should hit */
-    collideWithTileRaycast(tileData: any, pos: any) { return tileData > 0; }
+    collideWithTileRaycast(tileData: any, _pos: any) { return tileData > 0; }
 
     /** Called to check if a tile raycast hit
      *  @param {EngineObject} object - the object to test against
      *  @return {Boolean} true if the collision should be resolved
      */
-    collideWithObject(o: any)              { return true; }
+    collideWithObject(_o: any) { return true; }
 
     /** How long since the object was created
      *  @return {Number} */

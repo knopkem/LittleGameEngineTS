@@ -102,7 +102,11 @@ export const maxHeight = 1200; // up to 1080p and 16:10
 /** How much gravity to apply to objects along the Y axis, negative is down
  *  @default
  *  @memberof Settings */
-export const gravity = 0;
+export let gravity = 0;
+
+export function setGravity(grav: number) : number {
+  return gravity = grav;
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Camera settings

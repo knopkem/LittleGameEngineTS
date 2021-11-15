@@ -1,5 +1,6 @@
+import { mainCanvas } from "./index";
 import { sign, vec2, percent } from "./index";
-import { screenToWorld, mainCanvas, mainCanvasSize } from "./index";
+import { screenToWorld, mainCanvasSize } from "./index";
 import { debug } from "./index";
 import { touchInputEnable, gamepadsEnable, copyWASDToDpad, copyGamepadDirectionToStick } from "./index";
 import { zzfx } from "./index";
@@ -37,7 +38,7 @@ export const keyIsDown = (key: any, device=0)=> inputData[device] && inputData[d
 
 /** Clears all input
  *  @memberof Input */
- export const clearInput = ()=> inputData[0] = [];
+ export const clearInput = (): any => inputData[0] = [];
 
 /** Returns true if mouse button is down
  *  @param {Number} button
@@ -62,10 +63,6 @@ export const keyIsDown = (key: any, device=0)=> inputData[device] && inputData[d
  *  @memberof Input */
 
  export let mousePos = vec2();
-
- export function getMousePos() {
-   return mousePos;
- }
 
 /** Mouse pos in screen space
  *  @type {Vector2}
@@ -113,7 +110,7 @@ export const keyIsDown = (key: any, device=0)=> inputData[device] && inputData[d
 ///////////////////////////////////////////////////////////////////////////////
 // Input update called by engine
 
-const inputData = [[]];
+const inputData: any = [[]];
 
 export function inputUpdate()
 {
@@ -122,7 +119,7 @@ export function inputUpdate()
 
     // update mouse world space position
     mousePos = screenToWorld(mousePosScreen);
-
+    console.log('new pos', mousePos);
     // update gamepads if enabled
     gamepadsUpdate();
 }
@@ -133,7 +130,6 @@ export function inputUpdatePost()
     for (const deviceInputData of inputData)
     for (const i in deviceInputData)
 
-        // @ts-expect-error ts-migrate(2322) FIXME: Type 'number' is not assignable to type 'never'.
         deviceInputData[i] &= 1;
     mouseWheel = 0;
 }
@@ -145,7 +141,6 @@ onkeydown = e=>
 {
     if (debug && e.target != document.body) return;
 
-    // @ts-expect-error ts-migrate(2322) FIXME: Type 'number' is not assignable to type 'never'.
     e.repeat || (inputData[usingGamepad = 0][remapKeyCode(e.keyCode)] = 3);
     debug || e.preventDefault();
 }
@@ -153,7 +148,6 @@ onkeyup = e=>
 {
     if (debug && e.target != document.body) return;
 
-    // @ts-expect-error ts-migrate(2322) FIXME: Type 'number' is not assignable to type 'never'.
     inputData[0][remapKeyCode(e.keyCode)] = 4;
 }
 const remapKeyCode = (c: any) => copyWASDToDpad ? c==87?38 : c==83?40 : c==65?37 : c==68?39 : c : c;
@@ -165,18 +159,22 @@ const remapKeyCode = (c: any) => copyWASDToDpad ? c==87?38 : c==83?40 : c==65?37
 // @ts-expect-error ts-migrate(2322) FIXME: Type 'number' is not assignable to type 'never'.
 onmousedown = e=> {inputData[usingGamepad = 0][e.button] = 3; onmousemove(e); e.button && e.preventDefault();}
 
-// @ts-expect-error ts-migrate(2322) FIXME: Type 'number' is not assignable to type 'never'.
+// // @ts-expect-error ts-migrate(2322) FIXME: Type 'number' is not assignable to type 'never'.
 onmouseup   = e=> inputData[0][e.button] = inputData[0][e.button] & 2 | 4;
 onmousemove = e=>
 {
     // convert mouse pos to canvas space
-    if (!mainCanvas) return;
-    const rect = mainCanvas.getBoundingClientRect();
+    const canvas  = mainCanvas;
+    if (!canvas) {
+      console.error('no canvas');
+      return;
+    }
+    const rect = canvas.getBoundingClientRect();
     mousePosScreen.x = mainCanvasSize.x * percent(e.x, rect.right, rect.left);
     mousePosScreen.y = mainCanvasSize.y * percent(e.y, rect.bottom, rect.top);
 }
 onwheel = e=> e.ctrlKey || (mouseWheel = sign(e.deltaY));
-oncontextmenu = e=> !1; // prevent right click menu
+oncontextmenu = _e=> !1; // prevent right click menu
 
 ///////////////////////////////////////////////////////////////////////////////
 // Gamepad input

@@ -20,8 +20,7 @@ export const PI = Math.PI;
  *  @const
  *  @memberof Utilities */
 
-// @ts-expect-error ts-migrate(7015) FIXME: Element implicitly has an 'any' type because index... Remove this comment to see the full error message
-export const isChrome = window['chrome'];
+export const isChrome = window['chrome' as any];
 
 /** Returns absoulte value of value passed in
  *  @param {Number} value
@@ -162,7 +161,7 @@ export const randVector = (length: number = 1) => new Vector2().setAngle(rand(2 
  *  @param {Boolean} [linear]
  *  @return {Color}
  *  @memberof Random */
-export const randColor = (cA = new Color, cB = new Color(0, 0, 0, 1), linear: any) =>
+export const randColor = (cA = new Color, cB = new Color(0, 0, 0, 1), linear = false) =>
     linear ? cA.lerp(cB, rand()) : new Color(rand(cA.r, cB.r), rand(cA.g, cB.g), rand(cA.b, cB.b), rand(cA.a, cB.a));
 
 /** The seed used by the randSeeded function, should not be 0

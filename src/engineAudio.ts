@@ -1,6 +1,6 @@
 import { worldToScreen, mainCanvas } from './index';
 import { defaultSoundRange, defaultSoundTaper, soundEnable, cameraPos, audioVolume } from './index';
-import { percent, rand, clamp, abs, PI, vec2 } from './index';
+import { percent, rand, clamp, abs, PI } from './index';
 
 /** 
  *  LittleJS Audio System
@@ -117,8 +117,8 @@ export class Music {
  *  @return {HTMLAudioElement} - The audio element for this sound
  *  @memberof Audio */
 
-export function playAudioFile(url: any, volume = 1, loop = true) {
-    if (!soundEnable) return;
+export function playAudioFile(url: any, volume = 1, loop = true): HTMLAudioElement | undefined {
+    if (!soundEnable) return undefined;
 
     const audio = new Audio(url);
     audio.volume = audioVolume * volume;
@@ -137,8 +137,8 @@ export function playAudioFile(url: any, volume = 1, loop = true) {
  *  @return {SpeechSynthesisUtterance} - The utterance that was spoken
  *  @memberof Audio */
 
-export function speak(text: any, language = '', volume = 1, rate = 1, pitch = 1) {
-    if (!soundEnable || !speechSynthesis) return;
+export function speak(text: any, language = '', volume = 1, rate = 1, pitch = 1): SpeechSynthesisUtterance | undefined {
+    if (!soundEnable || !speechSynthesis) return undefined;
 
     // common languages (not supported by all browsers)
     // en - english,  it - italian, fr - french,  de - german, es - spanish
@@ -242,7 +242,7 @@ export function zzfxG
     ) {
     // init parameters
     let PI2 = PI * 2, sign = (v: any) => v > 0 ? 1 : -1,
-        startSlide = slide *= 500 * PI2 / zzfxR / zzfxR, b = [],
+        startSlide = slide *= 500 * PI2 / zzfxR / zzfxR, b: number[] = [],
         startFrequency = frequency *= (1 + randomness * rand(-1, 1)) * PI2 / zzfxR,
         t = 0, tm = 0, i = 0, j = 1, r = 0, c = 0, s = 0, f, length;
 
@@ -334,7 +334,6 @@ export function zzfxM(instruments: any, patterns: any, sequence: any, BPM = 125)
     let notFirstBeat: any;
     let stop;
     let instrument: any;
-    let pitch;
     let attenuation: any;
     let outSampleOffset: any;
     let isSequenceEnd;
@@ -353,7 +352,7 @@ export function zzfxM(instruments: any, patterns: any, sequence: any, BPM = 125)
     for (; hasMore; channelIndex++) {
 
         // reset current values
-        sampleBuffer = [hasMore = notFirstBeat = pitch = outSampleOffset = 0];
+        sampleBuffer = [hasMore = notFirstBeat = outSampleOffset = 0];
 
         // for each pattern in sequence
         sequence.forEach((patternIndex: any, sequenceIndex: any) => {

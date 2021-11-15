@@ -109,8 +109,9 @@ export class Medal
         // draw containing rect and clip to that region
         context.save();
         context.beginPath();
-        context.fillStyle = '#ddd'
-        context.fill(context.rect(x, y, medalDisplayWidth, medalDisplayHeight));
+        context.fillStyle = '#ddd';
+        context.rect(x, y, medalDisplayWidth, medalDisplayHeight);
+        context.fill();
         context.strokeStyle = context.fillStyle = '#000';
         context.lineWidth = 2; 
         context.stroke();
@@ -123,7 +124,8 @@ export class Medal
         context.font = '3em '+ defaultFont;
         context.fillText(this.name, x+medalDisplayIconSize+25, y+35);
         context.font = '1.5em '+ defaultFont;
-        context.restore(context.fillText(this.description, x+medalDisplayIconSize+25, y+70));
+        context.fillText(this.description, x+medalDisplayIconSize+25, y+70);
+        context.restore();
     }
 
     /** Render the icon for a medal

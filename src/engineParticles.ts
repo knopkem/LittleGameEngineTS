@@ -5,8 +5,6 @@
     - Fast particle rendering
 */
 
-'use strict';
-
 import { timeDelta, time } from "./index";
 import { debugRect } from "./index";
 import { setBlendMode, drawTile } from "./index";
@@ -19,7 +17,7 @@ import { PI, Color, vec2, Vector2, rand, randInCircle, randSign, randColor, min,
  * Particle Emitter - Spawns particles with the given settings
  */
 
-class ParticleEmitter extends EngineObject
+export class ParticleEmitter extends EngineObject
 {
     additive: any;
     angleSpeed: any;

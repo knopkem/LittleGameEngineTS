@@ -1,5 +1,5 @@
 const path = require('path');
-const HtmlWebPackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     entry: {
@@ -7,12 +7,15 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'index.umd.min.js',
-        libraryTarget: 'umd',
-        umdNamedDefine: true,
-        globalObject: 'this'
+        filename: 'library.esm.js',
+        library: {
+          type: 'module'
+        }
     },
     devtool: "source-map",
+    experiments: {
+          outputModule: true
+        },
     resolve: {
         extensions: [".ts"]
     },
@@ -29,8 +32,10 @@ module.exports = {
       ],
     },
     plugins: [
-        new HtmlWebPackPlugin({
-            template: "./public/index.html"
+        new CopyWebpackPlugin({
+            patterns: [ 
+              { from: "src/library.esm.d.ts", to: "library.esm.d.ts" },
+                ] 
         })
     ]
 };

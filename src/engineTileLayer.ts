@@ -57,7 +57,7 @@ export let tileCollision: Array<any> = [], tileCollisionSize = vec2();
  *  @return {Boolean}
  *  @memberof TileLayer */
 
- export function tileCollisionTest(pos: any, size=vec2(), object: any)
+ export function tileCollisionTest(pos: any, size=vec2(), object: any): boolean
 {
     const minX = max(Math.floor(pos.x - size.x/2), 0);
     const minY = max(Math.floor(pos.y - size.y/2), 0);
@@ -68,8 +68,9 @@ export let tileCollision: Array<any> = [], tileCollisionSize = vec2();
     {
         const tileData = tileCollision[y*tileCollisionSize.x+x];
         if (tileData && (!object || object.collideWithTile(tileData, new Vector2(x, y))))
-            return 1;
+            return true;
     }
+    return false;
 }
 
 /** Return the center of tile if any that is hit (this does not return the exact hit point)
@@ -78,7 +79,7 @@ export let tileCollision: Array<any> = [], tileCollisionSize = vec2();
  *  @param {EngineObject} [object]
  *  @return {Vector2}
  *  @memberof TileLayer */
- export function tileCollisionRaycast(posStart: any, posEnd: any, object: any)
+ export function tileCollisionRaycast(posStart: any, posEnd: any, object: any): Vector2 | undefined
 {
     // test if a ray collides with tiles from start to end
     // todo: a way to get the exact hit point, it must still register as inside the hit tile
@@ -112,6 +113,7 @@ export let tileCollision: Array<any> = [], tileCollisionSize = vec2();
     }
 
     debugRaycast && debugLine(posStart, posEnd, '#00f',.02, 1);
+    return undefined;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

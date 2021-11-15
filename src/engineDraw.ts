@@ -22,42 +22,43 @@ export const tileImage = new Image();
 /** The primary 2D canvas visible to the user
  *  @type {HTMLCanvasElement}
  *  @memberof Draw */
-export let mainCanvas: any;
+export let mainCanvas: HTMLCanvasElement;
 
-export function setMainCanvas(canvas: any): any {
+export function setMainCanvas(canvas: HTMLCanvasElement): HTMLCanvasElement {
    return mainCanvas = canvas;
 }
-
-export function getMainCanvas(): any {
-  return mainCanvas;
-}
-
 
 /** 2d context for mainCanvas
  *  @type {CanvasRenderingContext2D}
  *  @memberof Draw */
-export let mainContext: any;
+export let mainContext: CanvasRenderingContext2D;
 
-export function setMainContext(context: any): any {
-  return mainContext = context;
+export function setMainContext(context: CanvasRenderingContext2D | null): CanvasRenderingContext2D {
+  if (context) {
+    mainContext = context;
+  }
+  return mainContext;
 }
 
 /** A canvas that appears on top of everything the same size as mainCanvas
  *  @type {HTMLCanvasElement}
  *  @memberof Draw */
-export let overlayCanvas: any;
+export let overlayCanvas: HTMLCanvasElement;
 
-export function setOverlayCanvas(canvas: any): any {
+export function setOverlayCanvas(canvas: HTMLCanvasElement): HTMLCanvasElement {
   return overlayCanvas = canvas;
 }
 
 /** 2d context for overlayCanvas
  *  @type {CanvasRenderingContext2D}
  *  @memberof Draw */
-export let overlayContext: any;
+export let overlayContext: CanvasRenderingContext2D;
 
-export function setOverlayContext(context: any): any {
-  return overlayContext = context;
+export function setOverlayContext(context: CanvasRenderingContext2D | null): CanvasRenderingContext2D {
+  if (context) {
+    overlayContext = context;
+  }
+  return overlayContext;
 }
 
 /** The size of the main canvas (and other secondary canvases: overlayCanvas and glCanvas) 
@@ -229,7 +230,7 @@ export function drawCanvas2D(pos: any, size: any, angle: any, mirror: any, drawF
 export function drawText(text: any, pos: any, size = 1, color = new Color, lineWidth = 0, lineColor = new Color(0, 0, 0), textAlign = 'center', font = defaultFont) {
     pos = worldToScreen(pos);
     overlayContext.font = size * cameraScale + 'px ' + font;
-    overlayContext.textAlign = textAlign;
+    overlayContext.textAlign = textAlign as CanvasTextAlign;
     overlayContext.textBaseline = 'middle';
     if (lineWidth) {
         overlayContext.lineWidth = lineWidth * cameraScale;
