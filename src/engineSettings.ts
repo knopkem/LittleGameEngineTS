@@ -1,4 +1,4 @@
-import { max, vec2, Vector2 } from "./engineUtilities";
+import { max, vec2, Vector2 } from "./index";
 
 /**
  *  LittleJS Engine Settings

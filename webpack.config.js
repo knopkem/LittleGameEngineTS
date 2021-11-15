@@ -9,7 +9,6 @@ module.exports = {
         path: path.resolve(__dirname, 'dist'),
         filename: 'index.umd.min.js',
         libraryTarget: 'umd',
-        library: 'littleGameEngineTS',
         umdNamedDefine: true,
         globalObject: 'this'
     },

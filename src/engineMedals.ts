@@ -1,8 +1,8 @@
-import { ASSERT } from "./engineDebug";
-import { debugMedals } from "./engineRelease";
-import { overlayCanvas, overlayContext } from "./engineDraw";
-import { defaultFont, medalDisplayHeight, medalDisplayWidth, medalDisplayIconSize, medalDisplayTime, medalDisplaySlideTime } from "./engineSettings";
-import { timeReal } from "./engine";
+import { ASSERT } from "./index";
+import { debugMedals } from "./index";
+import { overlayCanvas, overlayContext } from "./index";
+import { defaultFont, medalDisplayHeight, medalDisplayWidth, medalDisplayIconSize, medalDisplayTime, medalDisplaySlideTime } from "./index";
+import { timeReal } from "./index";
 // import { enc, lib, AES } from 'crypto-js';
 
 /** 

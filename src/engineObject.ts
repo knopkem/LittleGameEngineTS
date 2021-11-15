@@ -1,14 +1,14 @@
-import { ASSERT, debugAABB } from "./engineDebug";
-import { abs, isOverlapping, lerp, max, randVector, sign, vec2, Vector2 } from "./engineUtilities";
-import { defaultObjectSize, defaultTileSize, defaultObjectMass, defaultObjectDamping, defaultObjectAngleDamping, defaultObjectElasticity, defaultObjectFriction } from "./engineSettings";
-import { time, engineObjects } from "./engine";
-import { clamp } from "./engineUtilities";
-import { maxObjectSpeed } from "./engineSettings";
-import { gravity } from "./engineSettings";
-import { engineCollideObjects } from "./engine";
-import { debugPhysics } from "./engineRelease";
-import { drawTile } from "./engineDraw";
-import { tileCollisionTest } from "./engineTileLayer";
+import { ASSERT, debugAABB } from "./index";
+import { abs, isOverlapping, lerp, max, randVector, sign, vec2, Vector2 } from "./index";
+import { defaultObjectSize, defaultTileSize, defaultObjectMass, defaultObjectDamping, defaultObjectAngleDamping, defaultObjectElasticity, defaultObjectFriction } from "./index";
+import { time, engineObjects } from "./index";
+import { clamp } from "./index";
+import { maxObjectSpeed } from "./index";
+import { gravity } from "./index";
+import { engineCollideObjects } from "./index";
+import { debugPhysics } from "./index";
+import { drawTile } from "./index";
+import { tileCollisionTest } from "./index";
 
 
 /*

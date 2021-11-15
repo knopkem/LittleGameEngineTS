@@ -1,6 +1,6 @@
-import { worldToScreen, mainCanvas } from './engineDraw';
-import { defaultSoundRange, defaultSoundTaper, soundEnable, cameraPos, audioVolume } from './engineSettings';
-import { percent, rand, clamp, abs, PI, vec2 } from './engineUtilities';
+import { worldToScreen, mainCanvas } from './index';
+import { defaultSoundRange, defaultSoundTaper, soundEnable, cameraPos, audioVolume } from './index';
+import { percent, rand, clamp, abs, PI, vec2 } from './index';
 
 /** 
  *  LittleJS Audio System

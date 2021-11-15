@@ -22,7 +22,7 @@ export default [
     output: {
       file: 'dist/index.umd.min.js',
       format: 'umd',
-      name: 'littleGameEngineTS',
+      name: 'littleTS',
       indent: false,
     },
     plugins: [

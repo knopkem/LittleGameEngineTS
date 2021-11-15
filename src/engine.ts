@@ -1,10 +1,11 @@
-import { fixedWidth, fixedHeight, tileBleedShrinkFix, pixelated, fixedFitToWindow, maxHeight, maxWidth } from "./engineSettings";
-import { ASSERT, debugInit, debugUpdate, debugRender, debug, showWatermark } from "./engineDebug";
-import { min, lerp, vec2, isOverlapping } from "./engineUtilities";
-import { tileImage, mainCanvas, setMainCanvas,  mainContext, setMainContext, overlayCanvas, setOverlayCanvas, overlayContext, setOverlayContext, setMainCanvasSize } from "./engineDraw";
-import { medalsRender } from "./engineMedals";
-import { glInit, glPreRender } from "./engineWebGL";
-import { glCanvas } from "./engineWebGL";
+import { fixedWidth, fixedHeight, tileBleedShrinkFix, pixelated, fixedFitToWindow, maxHeight, maxWidth } from "./index";
+import { ASSERT, debugInit, debugUpdate, debugRender, debug, showWatermark } from "./index";
+import { min, lerp, vec2, isOverlapping } from "./index";
+import { tileImage, mainCanvas, setMainCanvas,  mainContext, setMainContext, overlayCanvas, setOverlayCanvas, overlayContext, setOverlayContext, setMainCanvasSize } from "./index";
+import { medalsRender } from "./index";
+import { glInit, glPreRender } from "./index";
+import { glCanvas } from "./index";
+import { keyIsDown, inputUpdatePost, inputUpdate } from "./engineInput";
 
 /*
     LittleJS - The Tiny JavaScript Game Engine That Can!
@@ -59,7 +60,7 @@ export let paused = 0;
 
 // Engine internal variables not exposed to documentation
 export let frameTimeLastMS = 0, frameTimeBufferMS = 0, debugFPS = 0,
-    shrinkTilesX: number, shrinkTilesY: number, drawCount: any, tileImageSize: any, tileImageSizeInverse: false;
+    shrinkTilesX: number, shrinkTilesY: number, drawCount: any, tileImageSize: any, tileImageSizeInverse: any;
 
 export function setDrawCount(count: number): number {
   return drawCount = count;
@@ -81,7 +82,6 @@ export function setDrawCount(count: number): number {
     tileImage.onload = () => {
         // save tile image info
 
-        // @ts-expect-error ts-migrate(2554) FIXME: Expected 2 arguments, but got 1.
         tileImageSizeInverse = vec2(1).divide(tileImageSize = vec2(tileImage.width, tileImage.height));
 
         debug && (tileImage.onload = () => ASSERT(1)); // tile sheet can not reloaded
@@ -91,10 +91,9 @@ export function setDrawCount(count: number): number {
         // setup html
         document.body.appendChild(setMainCanvas(document.createElement('canvas')));
 
-        // @ts-expect-error ts-migrate(2540) FIXME: Cannot assign to 'style' because it is a read-only... Remove this comment to see the full error message
-        document.body.style = 'margin:0;overflow:hidden;background:#000';
-        mainCanvas.style = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)' +
-            (pixelated ? ';image-rendering:crisp-edges;image-rendering:pixelated' : ''); // pixelated rendering
+        document.body.setAttribute('style', 'margin:0;overflow:hidden;background:#000');
+        mainCanvas.setAttribute('style', 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)' +
+            (pixelated ? ';image-rendering:crisp-edges;image-rendering:pixelated' : '')); // pixelated rendering
         setMainContext(mainCanvas.getContext('2d'));
 
         // init stuff and start engine
@@ -103,7 +102,7 @@ export function setDrawCount(count: number): number {
 
         // create overlay canvas for hud to appear above gl canvas
         document.body.appendChild(setOverlayCanvas(document.createElement('canvas')));
-        overlayCanvas.style = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)';
+        overlayCanvas.setAttribute('style', 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)');
         setOverlayContext(overlayCanvas.getContext('2d'));
 
         gameInit();
@@ -287,19 +286,3 @@ export function engineObjectsDestroy() {
     }
 }
 
-function keyIsDown(arg0: number) {
-    throw new Error("Function not implemented.");
-    return false;
-}
-
-
-function inputUpdate() {
-    throw new Error("Function not implemented.");
-    return false;
-}
-
-
-function inputUpdatePost() {
-    throw new Error("Function not implemented.");
-    return false;
-}

@@ -1,8 +1,8 @@
-import { sign, vec2, percent } from "./engineUtilities";
-import { screenToWorld, mainCanvas, mainCanvasSize } from "./engineDraw";
-import { debug } from "./engineDebug";
-import { touchInputEnable, gamepadsEnable, copyWASDToDpad, copyGamepadDirectionToStick } from "./engineSettings";
-import { zzfx } from "./engineAudio";
+import { sign, vec2, percent } from "./index";
+import { screenToWorld, mainCanvas, mainCanvasSize } from "./index";
+import { debug } from "./index";
+import { touchInputEnable, gamepadsEnable, copyWASDToDpad, copyGamepadDirectionToStick } from "./index";
+import { zzfx } from "./index";
 
 /** 
  *  LittleJS Input System

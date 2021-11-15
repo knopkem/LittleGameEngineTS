@@ -7,13 +7,13 @@
 
 'use strict';
 
-import { timeDelta, time } from "./engine";
-import { debugRect } from "./engineDebug";
-import { setBlendMode, drawTile } from "./engineDraw";
-import { EngineObject } from "./engineObject";
-import { debugParticles } from "./engineRelease";
-import { defaultTileSize } from "./engineSettings";
-import { PI, Color, vec2, Vector2, rand, randInCircle, randSign, randColor, min, max } from "./engineUtilities";
+import { timeDelta, time } from "./index";
+import { debugRect } from "./index";
+import { setBlendMode, drawTile } from "./index";
+import { EngineObject } from "./index";
+import { debugParticles } from "./index";
+import { defaultTileSize } from "./index";
+import { PI, Color, vec2, Vector2, rand, randInCircle, randSign, randColor, min, max } from "./index";
 
 /**
  * Particle Emitter - Spawns particles with the given settings

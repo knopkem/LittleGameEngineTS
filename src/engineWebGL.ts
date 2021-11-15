@@ -9,9 +9,9 @@
  *  @namespace WebGL
  */
 
-import { debug } from "./engineDebug";
-import { tileImage, mainCanvas } from "./engineDraw";
-import { glEnable, pixelated, glOverlay, cameraScale, cameraPos } from "./engineSettings";
+import { debug } from "./index";
+import { tileImage, mainCanvas } from "./index";
+import { glEnable, pixelated, glOverlay, cameraScale, cameraPos } from "./index";
 
 
 /** The WebGL canvas which appears above the main canvas and below the overlay canvas

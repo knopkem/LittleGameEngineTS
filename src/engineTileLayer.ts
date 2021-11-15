@@ -1,10 +1,10 @@
-import { debugLine, ASSERT } from './engineDebug';
-import { mainContext, worldToScreen, mainCanvasSize, mainCanvas, drawTile, tileImage, setMainCanvas, setMainCanvasSize, setMainContext } from './engineDraw';
-import { EngineObject } from './engineObject';
-import { debugRaycast } from './engineRelease';
-import { defaultTileSize, cameraScale, cameraPos, pixelated, setCameraScale, setCameraPos } from './engineSettings';
-import { abs, Color, max, min, PI, sign, vec2, Vector2 } from './engineUtilities';
-import { glPreRender, glCopyToContext } from './engineWebGL';
+import { debugLine, ASSERT } from './index';
+import { mainContext, worldToScreen, mainCanvasSize, mainCanvas, drawTile, tileImage, setMainCanvas, setMainCanvasSize, setMainContext } from './index';
+import { EngineObject } from './index';
+import { debugRaycast } from './index';
+import { defaultTileSize, cameraScale, cameraPos, pixelated, setCameraScale, setCameraPos } from './index';
+import { abs, Color, max, min, PI, sign, vec2, Vector2 } from './index';
+import { glPreRender, glCopyToContext } from './index';
 
 /** 
  *  LittleJS Tile Layer System
@@ -22,7 +22,7 @@ import { glPreRender, glCopyToContext } from './engineWebGL';
 
 // Internal variables not exposed to documentation
 
-let tileCollision: Array<any> = [], tileCollisionSize = vec2();
+export let tileCollision: Array<any> = [], tileCollisionSize = vec2();
 
 /** Clear and initialize tile collision
  *  @param {Vector2} size

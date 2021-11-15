@@ -1,5 +1,5 @@
-import { time } from "./engine";
-import { ASSERT } from "./engineDebug";
+import { time } from "./index";
+import { ASSERT } from "./index";
 
 /**
  *  LittleJS Utility Classes and Functions
@@ -27,34 +27,34 @@ export const isChrome = window['chrome'];
  *  @param {Number} value
  *  @return {Number}
  *  @memberof Utilities */
-export const abs = (a: any) => a < 0 ? -a : a;
+export const abs = (a: number): number => a < 0 ? -a : a;
 
 /** Returns the sign of value passed in
  *  @param {Number} value
  *  @return {Number}
  *  @memberof Utilities */
-export const sign = (a: any) => a < 0 ? -1 : 1;
+export const sign = (a: number): number => a < 0 ? -1 : 1;
 
 /** Returns lowest of two values passed in
  *  @param {Number} valueA
  *  @param {Number} valueB
  *  @return {Number}
  *  @memberof Utilities */
-export const min = (a: any, b: any) => a < b ? a : b;
+export const min = (a: number, b: number): number => a < b ? a : b;
 
 /** Returns highest of two values passed in
  *  @param {Number} valueA
  *  @param {Number} valueB
  *  @return {Number}
  *  @memberof Utilities */
-export const max = (a: any, b: any) => a > b ? a : b;
+export const max = (a: number, b: number): number => a > b ? a : b;
 
 /** Returns first parm modulo the second param, but adjusted so negative numbers work as expected
  *  @param {Number} dividend
  *  @param {Number} divisor
  *  @return {Number}
  *  @memberof Utilities */
-export const mod = (a: any, b: any) => ((a % b) + b) % b;
+export const mod = (a: number, b: number): number => ((a % b) + b) % b;
 
 /** Clamps the value beween max and min
  *  @param {Number} value
@@ -63,7 +63,7 @@ export const mod = (a: any, b: any) => ((a % b) + b) % b;
  *  @return {Number}
  *  @memberof Utilities */
 
-export const clamp = (v: any, max = 1, min = 0) => (ASSERT(max > min), v < min ? min : v > max ? max : v);
+export const clamp = (v: number, max: number = 1, min: number = 0): number => (ASSERT(max > min), v < min ? min : v > max ? max : v);
 
 /** Returns what percentage the value is between max and min
  *  @param {Number} value
@@ -71,7 +71,7 @@ export const clamp = (v: any, max = 1, min = 0) => (ASSERT(max > min), v < min ?
  *  @param {Number} [min=0]
  *  @return {Number}
  *  @memberof Utilities */
-export const percent = (v: any, max = 1, min = 0) => max - min ? clamp((v - min) / (max - min)) : 0;
+export const percent = (v: number, max: number = 1, min: number = 0): number => max - min ? clamp((v - min) / (max - min)) : 0;
 
 /** Linearly interpolates the percent value between max and min
  *  @param {Number} percent
@@ -79,26 +79,26 @@ export const percent = (v: any, max = 1, min = 0) => max - min ? clamp((v - min)
  *  @param {Number} [min=0]
  *  @return {Number}
  *  @memberof Utilities */
-export const lerp = (p: any, max = 1, min = 0) => min + clamp(p) * (max - min);
+export const lerp = (p: number, max: number = 1, min: number = 0): number=> min + clamp(p) * (max - min);
 
 /** Formats seconds to 00:00 style for display purposes 
  *  @param {Number} t - time in seconds
  *  @return {String}
  *  @memberof Utilities */
-export const formatTime = (t: any) => (t / 60 | 0) + ':' + (t % 60 < 10 ? '0' : '') + (t % 60 | 0);
+export const formatTime = (t: number): string => (t / 60 | 0) + ':' + (t % 60 < 10 ? '0' : '') + (t % 60 | 0);
 
 /** Returns the nearest power of two not less then the value
  *  @param {Number} value
  *  @return {Number}
  *  @memberof Utilities */
 
-export const nearestPowerOfTwo = (v: any) => 2 ** Math.ceil(Math.log2(v));
+export const nearestPowerOfTwo = (v: number): number => 2 ** Math.ceil(Math.log2(v));
 
 /** Applies smoothstep function to the percentage value
  *  @param {Number} value
  *  @return {Number}
  *  @memberof Utilities */
-export const smoothStep = (p: any) => p * p * (3 - 2 * p);
+export const smoothStep = (p: number): number => p * p * (3 - 2 * p);
 
 /** Returns true if two axis aligned bounding boxes are overlapping 
  *  @param {Vector2} pointA - Center of box A
@@ -117,7 +117,7 @@ export const isOverlapping = (pA: any, sA: any, pB: any, sB: any) => abs(pA.x - 
  *  @param {Number} [t=time]      - Value to use for time of the wave
  *  @return {Number}              - Value waving between 0 and amplitude
  *  @memberof Utilities */
-export const wave = (frequency = 1, amplitude = 1, t = time) => amplitude / 2 * (1 - Math.cos(t * frequency * 2 * PI));
+export const wave = (frequency: number = 1, amplitude: number = 1, t: number = time): number => amplitude / 2 * (1 - Math.cos(t * frequency * 2 * PI));
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -129,32 +129,32 @@ export const wave = (frequency = 1, amplitude = 1, t = time) => amplitude / 2 * 
  *  @param {Number} [valueB=0]
  *  @return {Number}
  *  @memberof Random */
-export const rand = (a = 1, b = 0) => b + (a - b) * Math.random();
+export const rand = (a: number = 1, b: number = 0): number => b + (a - b) * Math.random();
 
 /** Returns a floored random value the two values passed in
  *  @param {Number} [valueA=1]
  *  @param {Number} [valueB=0]
  *  @return {Number}
  *  @memberof Random */
-export const randInt = (a = 1, b = 0) => rand(a, b) | 0;
+export const randInt = (a: number = 1, b: number = 0): number => rand(a, b) | 0;
 
 /** Randomly returns either -1 or 1
  *  @return {Number}
  *  @memberof Random */
-export const randSign = () => (rand(2) | 0) * 2 - 1;
+export const randSign = (): number => (rand(2) | 0) * 2 - 1;
 
 /** Returns a random Vector2 within a circular shape
  *  @param {Number} [radius=1]
  *  @param {Number} [minRadius=0]
  *  @return {Vector2}
  *  @memberof Random */
-export const randInCircle = (radius = 1, minRadius = 0) => radius > 0 ? randVector(radius * rand(minRadius / radius, 1) ** .5) : new Vector2;
+export const randInCircle = (radius: number = 1, minRadius: number = 0) => radius > 0 ? randVector(radius * rand(minRadius / radius, 1) ** .5) : new Vector2;
 
 /** Returns a random Vector2 with the passed in length
  *  @param {Number} [length=1]
  *  @return {Vector2}
  *  @memberof Random */
-export const randVector = (length = 1) => new Vector2().setAngle(rand(2 * PI), length);
+export const randVector = (length: number = 1) => new Vector2().setAngle(rand(2 * PI), length);
 
 /** Returns a random color between the two passed in colors, combine components if linear
  *  @param {Color}   [colorA=new Color(1,1,1,1)]
@@ -174,7 +174,7 @@ export let randSeed = 1;
  *  @param {Number} [valueB=0]
  *  @return {Number}
  *  @memberof Random */
-export const randSeeded = (a = 1, b = 0) => {
+export const randSeeded = (a: number = 1, b: number = 0): number => {
     randSeed ^= randSeed << 13; randSeed ^= randSeed >>> 17; randSeed ^= randSeed << 5; // xorshift
     return b + (a - b) * abs(randSeed % 1e9) / 1e9;
 }
@@ -319,7 +319,7 @@ export class Vector2 {
  *  @memberof Utilities */
 
  export function vec2 (x?: any, y?: any) {
-  return x.x == undefined ? new Vector2(x, y == undefined ? x : y) : new Vector2(x.x, x.y);
+    return (x === undefined || x.x == undefined) ? new Vector2(x, y == undefined ? x : y) : new Vector2(x.x, x.y);
 } 
 
 

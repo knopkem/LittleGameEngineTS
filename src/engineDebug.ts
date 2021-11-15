@@ -1,9 +1,9 @@
-import { engineName, engineObjects, time,  } from "./engine";
-import { mainContext, overlayCanvas, mainCanvas, drawLine, overlayContext, drawText, worldToScreen, setMainContext } from "./engineDraw";
-import { gamepadsEnable, cameraPos, cameraScale } from "./engineSettings";
-import { clamp, Color, formatTime, max, min, PI, Timer, vec2 } from "./engineUtilities";
-import { glCopyToContext } from "./engineWebGL";
-import { keyWasPressed, mousePos, stickData } from './engineInput';
+import { engineName, engineObjects, time,  } from "./index";
+import { mainContext, overlayCanvas, mainCanvas, drawLine, overlayContext, drawText, worldToScreen, setMainContext } from "./index";
+import { gamepadsEnable, cameraPos, cameraScale } from "./index";
+import { clamp, Color, formatTime, max, min, PI, Timer, vec2 } from "./index";
+import { glCopyToContext } from "./index";
+import { keyWasPressed, mousePos, stickData } from './index';
 
 /** 
  *  LittleJS Medal System
@@ -39,7 +39,7 @@ export const debugPointSize = .5;
  export const godMode = 0;
 
 // Engine internal variables not exposed to documentation
-let debugPrimitives: any = [], debugOverlay = 0, debugPhysics = 0, debugRaycast = 0, 
+export let debugPrimitives: any = [], debugOverlay = 0, debugPhysics = 0, debugRaycast = 0, 
 debugParticles = 0, debugGamepads = 0, debugMedals = 0, debugTakeScreenshot: any, downloadLink: any;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -160,7 +160,7 @@ export const debugInit = ()=>
 {
     // create link for saving screenshots
     document.body.appendChild(downloadLink = document.createElement('a'));
-    downloadLink.style.display = 'none';
+    downloadLink.setAttribute('style', 'display: none');
 }
 
 export const debugUpdate = ()=>

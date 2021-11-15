@@ -44,13 +44,15 @@ function gameInit()
     // set things up
     cameraScale = 16;
     cameraPos = tileCollisionSize.scale(.5);
-    mainCanvas.style.background = '#555';
+    canvas = getMainCanvas();
+    canvas.setAttribute('style', 'background: #555');
+    // mainCanvas.setAttribute('style', 'background: #555');
     sprites = [];
     gravity = -.01;
 
     // display stats using a div so when using glOverlay it still appears on top
     document.body.appendChild(statsDisplay = document.createElement('div'));
-    statsDisplay.style = 'position:absolute;width:100%;top:50%;left:50%;transform:translate(-50%,-50%);font-size:4em;text-align:center;font-family:arial;user-select:none';
+    statsDisplay.setAttribute('style', 'position:absolute;width:100%;top:50%;left:50%;transform:translate(-50%,-50%);font-size:4em;text-align:center;font-family:arial;user-select:none');
 }
 
 ///////////////////////////////////////////////////////////////////////////////

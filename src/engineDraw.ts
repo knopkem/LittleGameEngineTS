@@ -1,8 +1,8 @@
-import { Color, vec2, Vector2 } from "./engineUtilities";
-import { cameraPos, cameraScale, defaultFont, defaultTileSize, glEnable, tileBleedShrinkFix } from "./engineSettings";
-import { drawCount, setDrawCount } from "./engine";
-import { showWatermark } from "./engineDebug";
-import { glDraw, glSetBlendMode } from "./engineWebGL";
+import { Color, vec2, Vector2 } from "./index";
+import { cameraPos, cameraScale, defaultFont, defaultTileSize, glEnable, tileBleedShrinkFix } from "./index";
+import { drawCount, setDrawCount } from "./index";
+import { showWatermark } from "./index";
+import { glDraw, glSetBlendMode } from "./index";
 
 /** 
  *  LittleJS Drawing System
@@ -27,6 +27,11 @@ export let mainCanvas: any;
 export function setMainCanvas(canvas: any): any {
    return mainCanvas = canvas;
 }
+
+export function getMainCanvas(): any {
+  return mainCanvas;
+}
+
 
 /** 2d context for mainCanvas
  *  @type {CanvasRenderingContext2D}
