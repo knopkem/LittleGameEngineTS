@@ -12,7 +12,7 @@ This is a typescript port of [LittleJS](https://github.com/KilledByAPixel/Little
 
 ## Drawbacks
 
-* most of the types are just 'any' still
+* most of the types are still just: any
 * does not receive upstream modifications anymore
 * might be buggy (it was just a fun project after all)
 * might kill your cat
@@ -20,7 +20,7 @@ This is a typescript port of [LittleJS](https://github.com/KilledByAPixel/Little
 ## How to use
 
 ```
- npm install -s '@knopkem/little-game-engine-ts'
+ npm install -s @knopkem/little-game-engine-ts
 ```
 
 ## Example Project
