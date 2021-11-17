@@ -119,7 +119,6 @@ export function inputUpdate()
 
     // update mouse world space position
     mousePos = screenToWorld(mousePosScreen);
-    console.log('new pos', mousePos);
     // update gamepads if enabled
     gamepadsUpdate();
 }

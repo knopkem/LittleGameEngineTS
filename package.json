@@ -2,17 +2,15 @@
   "name": "@knopkem/little-game-engine-ts",
   "version": "1.0.0",
   "description": "LittleGameEngineTS - Tiny and Fast HTML5 Game Engine typescript port of LittleJS",
-  "main": "dist/library.esm.js",
-  "types": "dist/library.esm.d.ts",
-  "module": "dist/library.esm.ts",
+  "main": "dist/library.umd.js",
+  "types": "dist/library.umd.d.ts",
+  "module": "dist/library.umd.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/knopkem/LittleGameEngineTS.git"
   },
   "scripts": {
-    "build": "tsc -p src",
-    "webpack": "webpack --mode production",
-    "rollup": "rollup -c"
+    "build": "webpack --mode production"
   },
   "keywords": [
     "HTML5",
@@ -31,14 +29,15 @@
   },
   "homepage": "https://github.com/knopkem/LittleGameEngineTS",
   "devDependencies": {
-    "@rollup/plugin-babel": "^5.3.0",
-    "@rollup/plugin-node-resolve": "^13.0.6",
-    "@rollup/plugin-typescript": "^8.3.0",
+    "@babel/core": "^7.16.0",
+    "@babel/eslint-parser": "^7.16.3",
+    "@babel/preset-typescript": "^7.16.0",
     "@types/crypto-js": "^4.0.2",
+    "babel-loader": "^8.2.3",
+    "clean-webpack-plugin": "^4.0.0",
     "copy-webpack-plugin": "^9.1.0",
     "html-webpack-plugin": "^5.5.0",
-    "rollup": "^2.60.0",
-    "rollup-plugin-terser": "^7.0.2",
+    "terser-webpack-plugin": "^5.2.5",
     "ts-loader": "^9.2.6",
     "typescript": "^4.4.4",
     "webpack": "^5.64.0",
@@ -46,7 +45,6 @@
     "webpack-dev-server": "^4.5.0"
   },
   "dependencies": {
-    "@rollup/plugin-commonjs": "^21.0.1",
     "crypto-js": "^4.1.1",
     "tslib": "^2.3.1"
   }

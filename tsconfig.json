@@ -9,7 +9,6 @@
     "declaration": true,
     "removeComments": false,
     "incremental": true,
-    "tsBuildInfoFile": "./tsbuildinfo",
     "strict": true,
     "noImplicitAny": true,
     "noFallthroughCasesInSwitch": true,
