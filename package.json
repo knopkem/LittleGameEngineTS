@@ -1,6 +1,6 @@
 {
   "name": "@knopkem/little-game-engine-ts",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "LittleGameEngineTS - Tiny and Fast HTML5 Game Engine typescript port of LittleJS",
   "main": "dist/library.umd.js",
   "types": "dist/library.umd.d.ts",
