@@ -1,7 +1,5 @@
 const path = require('path');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
     entry: {
@@ -18,9 +16,6 @@ module.exports = {
     resolve: {
         extensions: ['.ts', '.tsx']
     },
-    externals: {
-      cryptojs: 'crypto-js',
-    },
     module: {
       rules: [
         {
@@ -32,15 +27,8 @@ module.exports = {
     },
     optimization: {
         minimize: true,
-        minimizer: [new TerserPlugin()],
     },
     plugins: [
         new CleanWebpackPlugin(),
-        new CopyWebpackPlugin({
-            patterns: [ 
-              { from: 'src/library.umd.d.ts', to: 'library.umd.d.ts' },
-                ] 
-        }),
-        new TerserPlugin(),
     ]
 };
