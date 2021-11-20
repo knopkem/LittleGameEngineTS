@@ -7,7 +7,6 @@ This is a typescript port of [LittleJS](https://github.com/KilledByAPixel/Little
 * robust compile step using typescript compiler
 * modern module approach (umd module) instead of global space
 * modern build pipeline using webpack
-* importable npm package
 * type definitions when importing game engine - no more programming in the dark
 
 ## Drawbacks
