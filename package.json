@@ -22,7 +22,7 @@
     "webgl",
     "engine"
   ],
-  "author": "Michael Knopke",
+  "author": "Frank Force, Michael Knopke",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/knopkem/LittleGameEngineTS/issues"
